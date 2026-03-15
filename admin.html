@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Admin — My Curated Finds</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --rose:#fce8ed;--rose2:#f0c4ce;--rose3:#c97a8a;--rose4:#a05060;
+  --sage:#e8ede6;--sand:#f7f2eb;--lav:#eeeaf8;
+  --cream:#fffaf6;--white:#fff;--text:#2e2020;--muted:#9a7878;--light:#fdf5f0;
+  --success:#6a9464;--danger:#c05050;--amz:#ff9900;--amz-dark:#b36b00;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);min-height:100vh}
+
+/* TOP BAR */
+.topbar{background:var(--white);border-bottom:1px solid var(--rose2);padding:0 16px;display:flex;align-items:center;gap:10px;height:56px;position:sticky;top:0;z-index:100}
+.topbar-logo{font-family:'Playfair Display',serif;font-size:17px;color:var(--text);margin-right:auto}
+.topbar-logo em{font-style:normal;font-size:11px;font-family:'Jost',sans-serif;color:var(--rose3);background:var(--rose);border-radius:100px;padding:2px 10px;margin-left:7px;vertical-align:middle}
+.btn{padding:8px 18px;border-radius:100px;border:none;font-family:'Jost',sans-serif;font-size:13px;cursor:pointer;transition:all .2s;font-weight:500;-webkit-tap-highlight-color:transparent}
+.btn-primary{background:var(--rose3);color:#fff}
+.btn-primary:hover,.btn-primary:active{background:var(--rose4)}
+.btn-outline{background:transparent;border:1px solid var(--rose2);color:var(--muted)}
+.btn-outline:hover,.btn-outline:active{background:var(--rose);color:var(--text)}
+.btn-sm{padding:6px 13px;font-size:12px}
+.btn-danger{background:#fde8e8;color:var(--danger);border:1px solid #f0c0c0}
+.btn-danger:hover,.btn-danger:active{background:#fcd0d0}
+.btn-amz{background:var(--amz);color:#111;border:none}
+.btn-amz:hover,.btn-amz:active{background:#e08600}
+
+/* BOTTOM NAV (mobile) */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--rose2);z-index:100;padding:8px 0 max(8px,env(safe-area-inset-bottom))}
+.bottom-nav-inner{display:flex;justify-content:space-around}
+.bnav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:4px 10px;border-radius:10px;color:var(--muted);font-family:'Jost',sans-serif;font-size:10px;transition:color .15s;-webkit-tap-highlight-color:transparent;min-width:56px}
+.bnav-btn.active{color:var(--rose3)}
+.bnav-btn .bni{font-size:20px}
+
+/* SIDEBAR (desktop) */
+.layout{display:flex;min-height:calc(100vh - 56px)}
+.sidebar{background:var(--white);border-right:1px solid var(--rose2);padding:24px 16px;display:flex;flex-direction:column;gap:4px;width:210px;flex-shrink:0}
+.sidebar-label{font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);padding:12px 10px 5px;font-weight:500}
+.nav-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:10px;cursor:pointer;font-size:13.5px;color:var(--muted);transition:all .15s;border:none;background:none;width:100%;text-align:left;-webkit-tap-highlight-color:transparent}
+.nav-item:hover,.nav-item:active{background:var(--rose);color:var(--text)}
+.nav-item.active{background:var(--rose);color:var(--rose4);font-weight:500}
+.nav-item .ni-icon{font-size:15px;width:20px;text-align:center}
+
+/* CONTENT AREA */
+.content{flex:1;padding:28px 20px 100px;max-width:860px;min-width:0}
+
+/* PAGES */
+.page{display:none}.page.active{display:block}
+
+/* SECTION HEADER */
+.sec-header{margin-bottom:22px}
+.sec-header h2{font-family:'Playfair Display',serif;font-size:clamp(20px,5vw,24px);font-weight:400;margin-bottom:4px}
+.sec-header p{font-size:13px;color:var(--muted)}
+
+/* CARD */
+.card{background:var(--white);border-radius:14px;border:1px solid var(--rose2);padding:20px;margin-bottom:16px}
+.card-title{font-family:'Playfair Display',serif;font-size:16px;margin-bottom:14px;display:flex;align-items:center;gap:7px}
+
+/* FORM */
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:12px}
+.form-row.single{grid-template-columns:1fr}
+.form-group{display:flex;flex-direction:column;gap:5px}
+label{font-size:12px;font-weight:500;color:var(--muted)}
+input[type=text],input[type=url],select,textarea{
+  padding:10px 13px;border:1px solid var(--rose2);border-radius:10px;
+  font-family:'Jost',sans-serif;font-size:14px;color:var(--text);
+  background:var(--light);outline:none;transition:border-color .2s;width:100%;
+  -webkit-appearance:none;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--rose3)}
+textarea{resize:vertical;min-height:64px}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239a7878' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-color:var(--light)}
+
+/* IMAGE PREVIEW */
+.img-preview-wrap{width:100%;height:130px;border-radius:10px;overflow:hidden;background:var(--rose);border:1px solid var(--rose2)}
+.img-preview-wrap img{width:100%;height:100%;object-fit:cover}
+.no-img{display:flex;align-items:center;justify-content:center;height:100%;font-size:12px;color:var(--muted)}
+
+/* ITEMS BUILDER */
+.items-builder{border:1px solid var(--rose2);border-radius:10px;overflow:hidden;margin-bottom:10px}
+.items-header{display:grid;grid-template-columns:28px 1fr 36px;gap:8px;padding:6px 12px;background:var(--rose);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--rose3);font-weight:500}
+.item-row{padding:10px 12px;border-bottom:1px solid var(--rose2);background:var(--light);display:flex;flex-direction:column;gap:7px}
+.item-row:last-child{border-bottom:none}
+.item-row-top{display:flex;align-items:center;gap:8px}
+.item-num{font-size:11px;color:var(--muted);font-weight:500;width:20px;text-align:center;flex-shrink:0}
+.item-row input{background:var(--white);border-radius:7px;padding:7px 10px;font-size:13px}
+.remove-item{background:none;border:none;cursor:pointer;color:var(--muted);font-size:18px;padding:2px 4px;border-radius:6px;line-height:1;flex-shrink:0}
+.remove-item:hover,.remove-item:active{color:var(--danger)}
+.item-row-fields{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.add-item-btn{background:none;border:1.5px dashed var(--rose2);color:var(--rose3);border-radius:8px;padding:9px;font-size:13px;cursor:pointer;width:100%;font-family:'Jost',sans-serif;transition:background .15s}
+.add-item-btn:hover,.add-item-btn:active{background:var(--rose)}
+
+/* EXISTING ITEMS */
+.existing-list{display:flex;flex-direction:column;gap:9px;margin-bottom:20px}
+.existing-item{display:flex;align-items:center;gap:12px;background:var(--white);border:1px solid var(--rose2);border-radius:12px;padding:10px 14px}
+.ei-img{width:46px;height:46px;border-radius:9px;object-fit:cover;background:var(--rose);flex-shrink:0}
+.ei-info{flex:1;min-width:0}
+.ei-info strong{font-size:13.5px;font-weight:500;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ei-info span{font-size:11px;color:var(--muted)}
+.ei-cat{font-size:9.5px;letter-spacing:.8px;text-transform:uppercase;color:var(--rose3);background:var(--rose);border-radius:100px;padding:2px 8px;font-weight:500;flex-shrink:0;white-space:nowrap}
+.ei-actions{display:flex;gap:6px;flex-shrink:0}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:24px}
+@media(min-width:500px){.stats-row{grid-template-columns:repeat(4,1fr)}}
+.stat-card{background:var(--white);border:1px solid var(--rose2);border-radius:12px;padding:16px;text-align:center}
+.stat-num{font-family:'Playfair Display',serif;font-size:28px;color:var(--rose4);margin-bottom:3px}
+.stat-label{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+
+/* INFO BOX */
+.info-box{display:flex;align-items:flex-start;gap:8px;padding:12px 14px;border-radius:10px;font-size:12.5px;line-height:1.6;margin-bottom:16px}
+.info-box.lavender{background:var(--lav);color:#6050a0;border:1px solid #d4caf0}
+.info-box.amber{background:#fff8e6;color:#a07020;border:1px solid #f5d99a}
+
+/* TOAST */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--text);color:#fff;padding:11px 22px;border-radius:100px;font-size:13px;opacity:0;transition:all .3s;pointer-events:none;z-index:999;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* MOBILE */
+@media(max-width:640px){
+  .sidebar{display:none}
+  .bottom-nav{display:block}
+  .content{padding:20px 14px 90px}
+  .form-row{grid-template-columns:1fr}
+  .item-row-fields{grid-template-columns:1fr}
+  .ei-cat{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-logo">my finds ✦ <em>Admin</em></div>
+  <a href="index.html" target="_blank"><button class="btn btn-outline btn-sm">View Site →</button></a>
+</div>
+
+<div class="layout">
+  <!-- DESKTOP SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-label">Manage</div>
+    <button class="nav-item active" data-page="dashboard"><span class="ni-icon">✦</span> Dashboard</button>
+    <button class="nav-item" data-page="add-pin"><span class="ni-icon">📌</span> Add Individual Find</button>
+    <button class="nav-item" data-page="add-group"><span class="ni-icon">🗂️</span> Add Collection</button>
+    <div class="sidebar-label">View All</div>
+    <button class="nav-item" data-page="all-pins"><span class="ni-icon">🖼️</span> All Finds</button>
+    <button class="nav-item" data-page="all-groups"><span class="ni-icon">📚</span> All Collections</button>
+  </aside>
+
+  <!-- PAGES -->
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="sec-header"><h2>Welcome back ✦</h2><p>An overview of everything on your site.</p></div>
+      <div class="stats-row" id="stats-row"></div>
+      <div class="info-box lavender">
+        <span>✦</span>
+        Your site updates the moment you add or remove anything — no extra steps needed. All links go straight to Amazon.
+      </div>
+      <div class="card">
+        <div class="card-title">🚀 Quick Actions</div>
+        <div style="display:flex;gap:9px;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="goPage('add-pin')">+ Add a Find</button>
+          <button class="btn btn-outline" onclick="goPage('add-group')">+ Add a Collection</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADD INDIVIDUAL FIND -->
+    <div class="page" id="page-add-pin">
+      <div class="sec-header"><h2>Add an Individual Find</h2><p>A single Amazon product you want to share.</p></div>
+      <div class="card">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Product Name *</label>
+            <input type="text" id="pin-title" placeholder="e.g. Rattan Wall Mirror"/>
+          </div>
+          <div class="form-group">
+            <label>Category *</label>
+            <select id="pin-category">
+              <option value="">Choose…</option>
+              <option value="travel">✈️ Travel Essentials</option>
+              <option value="home">🏡 Home Decor Finds</option>
+              <option value="fashion">👗 Modest Fashion</option>
+              <option value="skincare">🧴 Skincare</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row single">
+          <div class="form-group">
+            <label>Short Description</label>
+            <input type="text" id="pin-desc" placeholder="One line about why you love it"/>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Amazon Link *</label>
+            <input type="url" id="pin-link" placeholder="https://amazon.com/dp/…"/>
+          </div>
+          <div class="form-group">
+            <label>Product Image URL *</label>
+            <input type="url" id="pin-image" placeholder="Paste image URL" oninput="previewImg('pin-prev',this.value)"/>
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:18px">
+          <label>Image Preview</label>
+          <div class="img-preview-wrap">
+            <img id="pin-prev" src="" style="display:none"/>
+            <div class="no-img" id="pin-prev-placeholder">Paste an image URL above to preview</div>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="savePin()">Save Find ✦</button>
+      </div>
+      <div class="info-box amber">
+        <span>💡</span>
+        <div>To get an image from Amazon: open the product page → right-click the main photo → <strong>"Copy image address"</strong> → paste it in the Image URL box above.</div>
+      </div>
+    </div>
+
+    <!-- ADD COLLECTION -->
+    <div class="page" id="page-add-group">
+      <div class="sec-header"><h2>Add a Curated Collection</h2><p>For posts like "5 must-haves" — one card grouping multiple products.</p></div>
+      <div class="card">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Collection Title *</label>
+            <input type="text" id="grp-title" placeholder="e.g. 5 Must-Have Home Decor Items Under Budget"/>
+          </div>
+          <div class="form-group">
+            <label>Category *</label>
+            <select id="grp-category">
+              <option value="">Choose…</option>
+              <option value="travel">✈️ Travel Essentials</option>
+              <option value="home">🏡 Home Decor Finds</option>
+              <option value="fashion">👗 Modest Fashion</option>
+              <option value="skincare">🧴 Skincare</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row single">
+          <div class="form-group">
+            <label>Short Description</label>
+            <input type="text" id="grp-desc" placeholder="What's this collection about?"/>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Cover Image URL *</label>
+            <input type="url" id="grp-cover" placeholder="Main image for this collection" oninput="previewImg('grp-prev',this.value)"/>
+          </div>
+          <div class="form-group">
+            <label>Cover Preview</label>
+            <div class="img-preview-wrap" style="height:100px">
+              <img id="grp-prev" src="" style="display:none"/>
+              <div class="no-img" id="grp-prev-placeholder">Preview here</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:8px">
+          <label>Products in this Collection *</label>
+          <p style="font-size:11.5px;color:var(--muted);margin-top:3px">Add each product — title, Amazon link, and product image URL.</p>
+        </div>
+        <div class="items-builder">
+          <div class="items-header"><span>#</span><span>Product details</span><span></span></div>
+          <div id="items-list"></div>
+        </div>
+        <button class="add-item-btn" onclick="addItemRow()">+ Add another product</button>
+        <div style="margin-top:18px">
+          <button class="btn btn-primary" onclick="saveGroup()">Save Collection ✦</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALL FINDS -->
+    <div class="page" id="page-all-pins">
+      <div class="sec-header"><h2>All Individual Finds</h2><p>Tap a find to view on Amazon, or delete it.</p></div>
+      <div id="all-pins-list" class="existing-list"></div>
+    </div>
+
+    <!-- ALL COLLECTIONS -->
+    <div class="page" id="page-all-groups">
+      <div class="sec-header"><h2>All Collections</h2><p>Your curated multi-product groups.</p></div>
+      <div id="all-groups-list" class="existing-list"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <button class="bnav-btn active" data-page="dashboard"><span class="bni">✦</span>Home</button>
+    <button class="bnav-btn" data-page="add-pin"><span class="bni">📌</span>Add Find</button>
+    <button class="bnav-btn" data-page="add-group"><span class="bni">🗂️</span>Collection</button>
+    <button class="bnav-btn" data-page="all-pins"><span class="bni">🖼️</span>All Finds</button>
+    <button class="bnav-btn" data-page="all-groups"><span class="bni">📚</span>All</button>
+  </div>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SEED={
+  groups:[
+    {id:'g1',category:'home',title:'5 Must-Have Home Decor Items Under Budget',description:'Affordable pieces that look a million dollars',coverImage:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80',items:[
+      {title:'Rattan Wall Mirror',image:'https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?w=120&q=70',link:'https://amazon.com'},
+      {title:'Linen Throw Pillows',image:'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=120&q=70',link:'https://amazon.com'},
+      {title:'Ceramic Vase Set',image:'https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?w=120&q=70',link:'https://amazon.com'},
+    ]},
+    {id:'g2',category:'travel',title:'My Carry-On Essentials for Long Haul Flights',description:'Everything that fits in one bag',coverImage:'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80',items:[
+      {title:'Compression Packing Cubes',image:'https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=120&q=70',link:'https://amazon.com'},
+      {title:'Memory Foam Neck Pillow',image:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&q=70',link:'https://amazon.com'},
+    ]},
+  ],
+  pins:[
+    {id:'p1',category:'home',title:'Aesthetic Bedside Lamp',description:'Warm glow, minimal design',image:'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=400&q=80',link:'https://amazon.com'},
+    {id:'p2',category:'fashion',title:'Flowy Midi Skirt',description:'Modest, effortless and versatile',image:'https://images.unsplash.com/photo-1594938298603-c8148c4b4357?w=400&q=80',link:'https://amazon.com'},
+    {id:'p3',category:'skincare',title:'SPF 50 Mineral Sunscreen',description:'Zero white cast, all skin tones',image:'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&q=80',link:'https://amazon.com'},
+  ]
+};
+
+function getData(){try{const r=localStorage.getItem('mf_data');if(r)return JSON.parse(r);}catch(e){}return JSON.parse(JSON.stringify(SEED));}
+function saveData(d){localStorage.setItem('mf_data',JSON.stringify(d));}
+function uid(){return Math.random().toString(36).slice(2,9);}
+
+// NAVIGATION
+function goPage(key){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item,.bnav-btn').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+key).classList.add('active');
+  document.querySelectorAll('[data-page="'+key+'"]').forEach(el=>el.classList.add('active'));
+  if(key==='dashboard')renderDashboard();
+  if(key==='all-pins')renderAllPins();
+  if(key==='all-groups')renderAllGroups();
+  if(key==='add-group')initItemRows();
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('.nav-item,.bnav-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>goPage(btn.dataset.page));
+});
+
+// TOAST
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2600);
+}
+
+// IMAGE PREVIEW
+function previewImg(id,url){
+  const img=document.getElementById(id);
+  const ph=document.getElementById(id+'-placeholder');
+  if(url){img.src=url;img.style.display='block';if(ph)ph.style.display='none';}
+  else{img.style.display='none';if(ph)ph.style.display='flex';}
+}
+
+// DASHBOARD
+function renderDashboard(){
+  const d=getData();
+  const items=d.groups.reduce((a,g)=>a+g.items.length,0);
+  const cats=[...new Set([...d.pins.map(p=>p.category),...d.groups.map(g=>g.category)])].length;
+  document.getElementById('stats-row').innerHTML=`
+    <div class="stat-card"><div class="stat-num">${d.pins.length}</div><div class="stat-label">Individual Finds</div></div>
+    <div class="stat-card"><div class="stat-num">${d.groups.length}</div><div class="stat-label">Collections</div></div>
+    <div class="stat-card"><div class="stat-num">${items}</div><div class="stat-label">Items in Collections</div></div>
+    <div class="stat-card"><div class="stat-num">${cats}</div><div class="stat-label">Categories</div></div>`;
+}
+renderDashboard();
+
+// SAVE PIN
+function savePin(){
+  const title=document.getElementById('pin-title').value.trim();
+  const cat=document.getElementById('pin-category').value;
+  const desc=document.getElementById('pin-desc').value.trim();
+  const link=document.getElementById('pin-link').value.trim();
+  const image=document.getElementById('pin-image').value.trim();
+  if(!title||!cat||!link||!image){toast('⚠️ Please fill in all required fields');return;}
+  const d=getData();
+  d.pins.push({id:'p'+uid(),category:cat,title,description:desc,image,link});
+  saveData(d);
+  ['pin-title','pin-category','pin-desc','pin-link','pin-image'].forEach(id=>document.getElementById(id).value='');
+  previewImg('pin-prev','');
+  toast('✦ Find saved!');
+}
+
+// ITEMS BUILDER
+let itemCount=0;
+function initItemRows(){
+  itemCount=0;
+  document.getElementById('items-list').innerHTML='';
+  addItemRow();addItemRow();addItemRow();
+}
+function addItemRow(){
+  itemCount++;
+  const n=itemCount;
+  const row=document.createElement('div');
+  row.className='item-row';row.id='item-row-'+n;
+  row.innerHTML=`
+    <div class="item-row-top">
+      <span class="item-num">${n}</span>
+      <input type="text" placeholder="Product title" id="item-title-${n}" style="flex:1"/>
+      <button class="remove-item" onclick="removeItemRow(${n})">✕</button>
+    </div>
+    <div class="item-row-fields">
+      <input type="url" placeholder="Amazon link" id="item-link-${n}"/>
+      <input type="url" placeholder="Product image URL" id="item-img-${n}"/>
+    </div>`;
+  document.getElementById('items-list').appendChild(row);
+}
+function removeItemRow(n){const el=document.getElementById('item-row-'+n);if(el)el.remove();}
+
+// SAVE GROUP
+function saveGroup(){
+  const title=document.getElementById('grp-title').value.trim();
+  const cat=document.getElementById('grp-category').value;
+  const desc=document.getElementById('grp-desc').value.trim();
+  const cover=document.getElementById('grp-cover').value.trim();
+  if(!title||!cat||!cover){toast('⚠️ Please fill title, category and cover image');return;}
+  const rows=document.querySelectorAll('#items-list .item-row');
+  const items=[];
+  rows.forEach(row=>{
+    const id=row.id.split('-')[2];
+    const t=(document.getElementById('item-title-'+id)||{}).value||'';
+    const l=(document.getElementById('item-link-'+id)||{}).value||'';
+    const img=(document.getElementById('item-img-'+id)||{}).value||'';
+    if(t.trim()&&l.trim())items.push({title:t.trim(),link:l.trim(),image:img.trim()});
+  });
+  if(!items.length){toast('⚠️ Add at least one product');return;}
+  const d=getData();
+  d.groups.push({id:'g'+uid(),category:cat,title,description:desc,coverImage:cover,items});
+  saveData(d);
+  ['grp-title','grp-category','grp-desc','grp-cover'].forEach(id=>document.getElementById(id).value='');
+  previewImg('grp-prev','');
+  initItemRows();
+  toast('✦ Collection saved!');
+}
+
+// ALL FINDS
+const CEMOJI={travel:'✈️',home:'🏡',fashion:'👗',skincare:'🧴'};
+function renderAllPins(){
+  const d=getData();
+  const el=document.getElementById('all-pins-list');
+  if(!d.pins.length){el.innerHTML='<p style="color:var(--muted);font-size:13px;padding:8px 0">No finds yet — add your first one!</p>';return;}
+  el.innerHTML=d.pins.map(p=>`
+    <div class="existing-item">
+      <img class="ei-img" src="${p.image}" alt="" onerror="this.style.opacity='.3'"/>
+      <div class="ei-info">
+        <strong>${p.title}</strong>
+        <span>${p.description||'No description'}</span>
+      </div>
+      <span class="ei-cat">${CEMOJI[p.category]||''} ${p.category}</span>
+      <div class="ei-actions">
+        <a href="${p.link}" target="_blank" rel="noopener"><button class="btn btn-outline btn-sm">View</button></a>
+        <button class="btn btn-danger btn-sm" onclick="deletePin('${p.id}')">Delete</button>
+      </div>
+    </div>`).join('');
+}
+function deletePin(id){
+  if(!confirm('Delete this find?'))return;
+  const d=getData();d.pins=d.pins.filter(p=>p.id!==id);
+  saveData(d);renderAllPins();renderDashboard();toast('Deleted.');
+}
+
+// ALL GROUPS
+function renderAllGroups(){
+  const d=getData();
+  const el=document.getElementById('all-groups-list');
+  if(!d.groups.length){el.innerHTML='<p style="color:var(--muted);font-size:13px;padding:8px 0">No collections yet.</p>';return;}
+  el.innerHTML=d.groups.map(g=>`
+    <div class="existing-item">
+      <img class="ei-img" src="${g.coverImage}" alt="" onerror="this.style.opacity='.3'"/>
+      <div class="ei-info">
+        <strong>${g.title}</strong>
+        <span>${g.items.length} product${g.items.length!==1?'s':''} · ${g.description||'No description'}</span>
+      </div>
+      <span class="ei-cat">${CEMOJI[g.category]||''} ${g.category}</span>
+      <div class="ei-actions">
+        <button class="btn btn-danger btn-sm" onclick="deleteGroup('${g.id}')">Delete</button>
+      </div>
+    </div>`).join('');
+}
+function deleteGroup(id){
+  if(!confirm('Delete this collection?'))return;
+  const d=getData();d.groups=d.groups.filter(g=>g.id!==id);
+  saveData(d);renderAllGroups();renderDashboard();toast('Deleted.');
+}
+
+initItemRows();
+</script>
+</body>
+</html>
