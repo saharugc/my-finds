@@ -177,9 +177,9 @@ footer{text-align:center;padding:24px 16px;border-top:1px solid var(--rose2);fon
   </div>
   <div class="filter-row">
     <button class="filter-btn active" data-filter="all">✦ All</button>
-    <button class="filter-btn" data-filter="travel">✈️ Travel</button>
-    <button class="filter-btn" data-filter="home">🏡 Home</button>
-    <button class="filter-btn" data-filter="fashion">👗 Fashion</button>
+    <button class="filter-btn" data-filter="travel">✈️ Travel Essentials</button>
+    <button class="filter-btn" data-filter="home">🏡 Home Decor Finds</button>
+    <button class="filter-btn" data-filter="fashion">👗 Modest Fashion</button>
     <button class="filter-btn" data-filter="skincare">🧴 Skincare</button>
   </div>
 </nav>
@@ -389,7 +389,10 @@ document.querySelectorAll('.filter-btn').forEach(btn=>{
   btn.addEventListener('click',()=>{
     activeFilter=btn.dataset.filter;
     document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active'); render();
+    btn.classList.add('active');
+    showDetail(null);
+    history.replaceState(null,'',window.location.pathname);
+    render();
   });
 });
 document.getElementById('search').addEventListener('input',e=>{searchQ=e.target.value; render();});
