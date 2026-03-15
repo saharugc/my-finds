@@ -14,16 +14,12 @@
 }
 html{scroll-behavior:smooth}
 body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);min-height:100vh}
-
-/* NAV */
 nav{background:rgba(255,250,246,.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--rose2);position:sticky;top:0;z-index:100}
 .nav-top{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:0 16px;height:52px}
 .nav-logo{font-family:'Playfair Display',serif;font-size:17px;color:var(--text);text-decoration:none;margin-right:auto}
 .nav-link{font-size:13px;color:var(--muted);text-decoration:none;padding:5px 12px;border-radius:100px;border:1px solid var(--rose2);transition:all .18s;white-space:nowrap;-webkit-tap-highlight-color:transparent}
 .nav-link:hover,.nav-link:active{background:var(--rose);color:var(--text)}
 .nav-link.active{background:var(--rose3);border-color:var(--rose3);color:#fff}
-
-/* BLOG LIST PAGE */
 .blog-hero{background:linear-gradient(145deg,#fce4ec 0%,#f8eaf2 40%,#ece6f8 80%,#e6f0e4 100%);padding:40px 20px 36px;text-align:center;position:relative;overflow:hidden}
 .blog-hero::before{content:'';position:absolute;top:-50px;right:-60px;width:180px;height:180px;border-radius:50%;background:rgba(238,234,248,.5)}
 .blog-hero::after{content:'';position:absolute;bottom:-30px;left:-40px;width:140px;height:140px;border-radius:50%;background:rgba(252,228,236,.45)}
@@ -32,39 +28,32 @@ nav{background:rgba(255,250,246,.97);backdrop-filter:blur(14px);border-bottom:1p
 .blog-hero h1{font-family:'Playfair Display',serif;font-size:clamp(28px,6vw,46px);font-weight:400;line-height:1.1;margin-bottom:10px}
 .blog-hero h1 em{font-style:italic;color:var(--rose3)}
 .blog-hero p{font-size:13.5px;color:var(--muted);line-height:1.7;max-width:400px;margin:0 auto}
-
-/* CATEGORY FILTERS */
 .blog-filters{display:flex;gap:7px;padding:14px 16px;overflow-x:auto;scrollbar-width:none;max-width:860px;margin:0 auto;-webkit-overflow-scrolling:touch}
 .blog-filters::-webkit-scrollbar{display:none}
 .blog-filter-btn{padding:5px 15px;border-radius:100px;border:1px solid var(--rose2);background:transparent;font-family:'Jost',sans-serif;font-size:12.5px;color:var(--muted);cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0;-webkit-tap-highlight-color:transparent}
 .blog-filter-btn:hover,.blog-filter-btn:active{background:var(--rose);color:var(--text)}
 .blog-filter-btn.active{background:var(--rose3);border-color:var(--rose3);color:#fff}
-
-/* BLOG LIST */
 .blog-list-wrap{max-width:860px;margin:0 auto;padding:8px 16px 80px}
-
-/* FEATURED POST (first post) */
+.loading{text-align:center;padding:60px 20px;color:var(--muted)}
+.loading-spinner{width:32px;height:32px;border:2px solid var(--rose2);border-top-color:var(--rose3);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
 .post-featured{display:grid;grid-template-columns:1fr;gap:0;background:#fff;border-radius:20px;border:1px solid var(--rose2);overflow:hidden;text-decoration:none;color:inherit;margin-bottom:28px;transition:transform .2s,box-shadow .2s;-webkit-tap-highlight-color:transparent}
 @media(min-width:600px){.post-featured{grid-template-columns:1.2fr 1fr}}
 .post-featured:active{transform:scale(.99)}
 @media(hover:hover){.post-featured:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(180,100,120,.13)}}
 .post-featured-img{aspect-ratio:16/9;overflow:hidden;background:var(--rose)}
 @media(min-width:600px){.post-featured-img{aspect-ratio:auto;min-height:260px}}
-.post-featured-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.post-featured-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s;display:block}
 @media(hover:hover){.post-featured:hover .post-featured-img img{transform:scale(1.04)}}
 .post-featured-body{padding:22px 22px 24px;display:flex;flex-direction:column;justify-content:center}
 .post-tag{display:inline-flex;align-items:center;gap:5px;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--rose3);background:var(--rose);border-radius:100px;padding:3px 10px;font-weight:500;margin-bottom:10px;width:fit-content}
 .post-featured-body h2{font-family:'Playfair Display',serif;font-size:clamp(20px,4vw,26px);font-weight:400;line-height:1.25;margin-bottom:8px}
 .post-featured-body p{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:14px;flex:1}
 .post-meta{display:flex;align-items:center;gap:10px;font-size:11px;color:var(--muted)}
-.post-meta span{display:flex;align-items:center;gap:4px}
 .read-more{font-size:12.5px;color:var(--rose3);font-weight:500;margin-top:14px}
-
-/* GRID OF POSTS */
 .posts-grid{display:grid;grid-template-columns:1fr;gap:16px}
 @media(min-width:480px){.posts-grid{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:720px){.posts-grid{grid-template-columns:repeat(3,1fr)}}
-
 .post-card{background:#fff;border-radius:18px;border:1px solid var(--rose2);overflow:hidden;text-decoration:none;color:inherit;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s;-webkit-tap-highlight-color:transparent}
 .post-card:active{transform:scale(.98)}
 @media(hover:hover){.post-card:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(180,100,120,.12)}}
@@ -75,48 +64,36 @@ nav{background:rgba(255,250,246,.97);backdrop-filter:blur(14px);border-bottom:1p
 .post-card-body h3{font-family:'Playfair Display',serif;font-size:15.5px;font-weight:400;line-height:1.3;margin-bottom:6px}
 .post-card-body p{font-size:12px;color:var(--muted);line-height:1.55;flex:1;margin-bottom:10px}
 .post-card-meta{font-size:10.5px;color:var(--muted);display:flex;align-items:center;gap:6px}
-
-/* EMPTY */
 .blog-empty{text-align:center;padding:60px 20px;color:var(--muted)}
 .blog-empty span{font-size:32px;display:block;margin-bottom:10px}
-
-/* ── SINGLE POST VIEW ── */
+/* SINGLE POST */
 .post-detail{max-width:700px;margin:0 auto;padding:24px 16px 80px;display:none}
-.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--rose3);text-decoration:none;padding:8px 0;margin-bottom:20px;font-weight:500;-webkit-tap-highlight-color:transparent;background:none;border:none;cursor:pointer}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--rose3);padding:8px 0;margin-bottom:20px;font-weight:500;-webkit-tap-highlight-color:transparent;background:none;border:none;cursor:pointer;text-decoration:none}
 .back-btn:hover{color:var(--rose4)}
 .post-detail-cover{width:100%;aspect-ratio:16/9;border-radius:18px;overflow:hidden;background:var(--rose);margin-bottom:24px}
 .post-detail-cover img{width:100%;height:100%;object-fit:cover;display:block}
 .post-detail-tag{display:inline-flex;align-items:center;gap:5px;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--rose3);background:var(--rose);border-radius:100px;padding:3px 12px;font-weight:500;margin-bottom:12px}
 .post-detail h1{font-family:'Playfair Display',serif;font-size:clamp(24px,5vw,36px);font-weight:400;line-height:1.2;margin-bottom:10px}
 .post-detail-meta{font-size:11.5px;color:var(--muted);margin-bottom:22px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.post-detail-meta span{display:flex;align-items:center;gap:4px}
-
-/* RICH CONTENT RENDERER */
 .post-content{font-size:15px;line-height:1.8;color:var(--text)}
-.post-content h2{font-family:'Playfair Display',serif;font-size:clamp(20px,4vw,26px);font-weight:400;margin:32px 0 12px;color:var(--text)}
-.post-content h3{font-family:'Playfair Display',serif;font-size:18px;font-weight:400;margin:24px 0 10px;color:var(--text)}
+.post-content h2{font-family:'Playfair Display',serif;font-size:clamp(20px,4vw,26px);font-weight:400;margin:32px 0 12px}
+.post-content h3{font-family:'Playfair Display',serif;font-size:18px;font-weight:400;margin:24px 0 10px}
 .post-content p{margin-bottom:16px}
 .post-content ul,.post-content ol{margin:0 0 16px 22px}
 .post-content li{margin-bottom:8px;line-height:1.7}
 .post-content strong{font-weight:500;color:var(--rose4)}
 .post-content em{font-style:italic;color:var(--rose3)}
 .post-content blockquote{border-left:3px solid var(--rose3);padding:10px 16px;background:var(--rose);border-radius:0 10px 10px 0;margin:20px 0;font-style:italic;color:var(--rose4);font-size:14.5px;line-height:1.7}
-.post-content hr{border:none;border-top:1px solid var(--rose2);margin:28px 0}
 .post-content a{color:var(--rose3);text-decoration:underline;text-underline-offset:3px}
-
-/* NUMBERED LIST SECTION (for "Top 15" style) */
-.numbered-section{counter-reset:items;display:flex;flex-direction:column;gap:14px;margin:20px 0 24px}
+.numbered-section{display:flex;flex-direction:column;gap:14px;margin:20px 0 24px}
 .numbered-item{display:flex;gap:14px;align-items:flex-start;padding:14px 16px;background:#fff;border-radius:14px;border:1px solid var(--rose2)}
 .numbered-item-num{font-family:'Playfair Display',serif;font-size:22px;color:var(--rose2);font-weight:400;min-width:28px;line-height:1;margin-top:2px}
-.numbered-item-body strong{font-size:14.5px;font-weight:500;display:block;margin-bottom:3px;color:var(--text)}
+.numbered-item-body strong{font-size:14.5px;font-weight:500;display:block;margin-bottom:3px}
 .numbered-item-body p{font-size:13px;color:var(--muted);line-height:1.6;margin:0}
-
-/* FOOTER */
 footer{text-align:center;padding:24px 16px;border-top:1px solid var(--rose2);font-size:11px;color:var(--muted)}
 </style>
 </head>
 <body>
-
 <nav>
   <div class="nav-top">
     <a class="nav-logo" href="index.html">sahar's finds ✦</a>
@@ -125,7 +102,6 @@ footer{text-align:center;padding:24px 16px;border-top:1px solid var(--rose2);fon
   </div>
 </nav>
 
-<!-- BLOG LIST -->
 <div id="blog-list-view">
   <div class="blog-hero">
     <div class="blog-hero-inner">
@@ -134,15 +110,14 @@ footer{text-align:center;padding:24px 16px;border-top:1px solid var(--rose2);fon
       <p>Real experiences, honest guides and things worth knowing before you go.</p>
     </div>
   </div>
-
   <div class="blog-filters" id="blog-filters">
     <button class="blog-filter-btn active" data-tag="all">✦ All</button>
   </div>
-
-  <div class="blog-list-wrap" id="blog-list-wrap"></div>
+  <div class="blog-list-wrap" id="blog-list-wrap">
+    <div class="loading"><div class="loading-spinner"></div><p>Loading posts…</p></div>
+  </div>
 </div>
 
-<!-- SINGLE POST -->
 <div class="post-detail" id="post-detail-view">
   <button class="back-btn" onclick="goBack()">← Back to Blog</button>
   <div id="post-detail-inner"></div>
@@ -151,168 +126,75 @@ footer{text-align:center;padding:24px 16px;border-top:1px solid var(--rose2);fon
 <footer>made with love by sahar &nbsp;✦&nbsp; some links are affiliate links</footer>
 
 <script>
-// ── SEED POSTS ──
-const SEED_POSTS=[
-  {
-    id:'b1',
-    title:'Best Stays in Gokarna: From Budget Beach Huts to Boutique Bliss',
-    excerpt:'Gokarna is one of those places that still feels untouched. Here\'s where to stay based on your vibe.',
-    coverImage:'https://images.unsplash.com/photo-1590080875515-9b24bc8ef3e8?w=800&q=80',
-    tag:'Travel',
-    date:'March 2025',
-    readTime:'6 min read',
-    content:[
-      {type:'p',text:'Gokarna is everything Goa used to be before Instagram found it. Quieter beaches, fewer crowds, and a genuinely unhurried pace that makes you forget your phone exists.'},
-      {type:'p',text:'I\'ve stayed here twice now — once solo on a budget, once with friends splurging a little. Here\'s what I found across both trips.'},
-      {type:'h2',text:'Budget Picks (Under ₹2000/night)'},
-      {type:'numbered',items:[
-        {title:'Namaste Café Beach Huts',body:'Right on Om Beach, simple bamboo huts with sea views. The vibes are unmatched. Book early — they fill up fast in peak season.'},
-        {title:'Zostel Gokarna',body:'The classic backpacker choice. Clean dorms, great common areas, and they organise hikes to Half Moon Beach.'},
-        {title:'Kudle Beach View Resort',body:'No frills, but the location on Kudle Beach is genuinely dreamy. Ask for a room facing the water.'},
-      ]},
-      {type:'h2',text:'Mid-Range Sweet Spots (₹2500–5000/night)'},
-      {type:'numbered',items:[
-        {title:'Swasara Resort',body:'Ayurvedic retreat vibes with gorgeous architecture. Worth every rupee if you want to actually unwind.'},
-        {title:'CGH Earth Spice Village (nearby)',body:'A short drive but worlds away. Eco-cottages, zero plastic, and the best breakfast spread I\'ve had in Karnataka.'},
-      ]},
-      {type:'h2',text:'My Honest Tips'},
-      {type:'ul',items:['Go November to February for the best weather.','Half Moon Beach is worth the 45-min hike or boat ride — do it early morning.','Eat at Namaste Café at least once. The banana pancakes are not a drill.','Most stays don\'t have AC — embrace it or book accordingly.']},
-      {type:'blockquote',text:'"Gokarna is where you go when you need to remember who you are without your routine."'},
-    ]
-  },
-  {
-    id:'b2',
-    title:'Top 15 Things to Do in Bangalore That Aren\'t Pub Crawls',
-    excerpt:'Beyond the microbreweries, Bangalore has art, forests, markets and some genuinely underrated corners.',
-    coverImage:'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?w=800&q=80',
-    tag:'Travel',
-    date:'January 2025',
-    readTime:'8 min read',
-    content:[
-      {type:'p',text:'Bangalore gets a lot of noise about its nightlife and startup scene. But spend a slow weekend here and you\'ll find a city with far more texture than its reputation suggests.'},
-      {type:'numbered',items:[
-        {title:'Lalbagh Botanical Garden at 7am',body:'Beat the crowds and the heat. The glasshouse is stunning and the whole garden feels like a secret.'},
-        {title:'Cubbon Park on a Sunday',body:'Locals use it like their backyard. Rent a cycle, sit under a tree, or just people-watch.'},
-        {title:'Commercial Street for fabrics',body:'If you sew or just love textiles, this is a rabbit hole you\'ll be happy to fall into.'},
-        {title:'Koshy\'s for breakfast',body:'Old-school Bangalore. The eggs are fine; the atmosphere is irreplaceable.'},
-        {title:'HAL Aerospace Museum',body:'Underrated and actually fascinating, especially the cockpit simulators.'},
-        {title:'Nandi Hills day trip',body:'Two hours out, completely worth it. Go for sunrise if you can stomach a 4am start.'},
-        {title:'Ulsoor Lake morning walk',body:'Peaceful, local, and a nice contrast to the city\'s usual chaos.'},
-        {title:'National Gallery of Modern Art',body:'One of the better NGMA branches. Give it a proper 90 minutes.'},
-        {title:'Russell Market',body:'Old Bangalore meat, flowers, spices. A little overwhelming in the best way.'},
-        {title:'Jayamahal Palace Hotel high tea',body:'Colonial-era building, proper filter coffee, and good cake. Worth the splurge.'},
-        {title:'Bannerghatta Biological Park',body:'Not a zoo — a forest reserve with safari options. The butterfly enclosure is magical.'},
-        {title:'VV Puram Food Street',body:'Saturday evenings only. Masala puri, churmuri, and more fried things than your arteries need.'},
-        {title:'Blossom Book House',body:'Second-hand books stacked floor to ceiling. Budget at least an hour and leave your tote bag at home (you\'ll need a bigger one).'},
-        {title:'Wonderla for a chaotic fun day',body:'Not aesthetic, deeply fun. Go on a weekday.'},
-        {title:'Drive down MG Road at night',body:'Just… do it once. The city has a mood after 9pm that the daytime doesn\'t.'},
-      ]},
-      {type:'h2',text:'Getting Around'},
-      {type:'p',text:'Ola and Uber work well. The metro is genuinely good now — use it between Indiranagar, MG Road and Majestic. Auto-rickshaws are negotiable and faster in tight spots.'},
-    ]
-  },
-  {
-    id:'b3',
-    title:'My Honest Skincare Routine for Hot, Humid Climates',
-    excerpt:'What actually works when you\'re sweating through your SPF by 10am.',
-    coverImage:'https://images.unsplash.com/photo-1570194065650-d99fb4bedf0a?w=800&q=80',
-    tag:'Skincare',
-    date:'February 2025',
-    readTime:'5 min read',
-    content:[
-      {type:'p',text:'I spent six months in Southeast Asia and India and came back with a completely stripped-back routine. Here\'s what I learned.'},
-      {type:'h2',text:'Morning (keeps it under 5 minutes)'},
-      {type:'ul',items:['Gentle gel cleanser — nothing foamy or stripping','Niacinamide serum — one layer, let it sink in','Light moisturiser or skip entirely if skin feels balanced','SPF 50 — the only non-negotiable']},
-      {type:'h2',text:'Evening'},
-      {type:'ul',items:['Double cleanse if you wore SPF (which you did)','Snail mucin essence — the one thing I\'d keep if I could only keep one product','Retinol 2-3 nights a week — start slow','Basic ceramide moisturiser']},
-      {type:'blockquote',text:'"In humidity, less really is more. Your skin is already getting environmental moisture — you don\'t need to layer five creams on top of it."'},
-      {type:'h2',text:'Products I Swear By'},
-      {type:'p',text:'I\'ve linked everything I actually use in my Skincare section — all on Amazon, all tested for at least 3 months before I recommended them.'},
-    ]
-  },
-];
+// ── ⚙️ SUPABASE CONFIG — paste your values here ──
+const SUPABASE_URL = 'https://zcyqynlpkzdzilmohnxh.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjeXF5bmxwa3pkemlsbW9obnhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2MDEyODMsImV4cCI6MjA4OTE3NzI4M30.kd568wumwGBsoKEkC0cE1op-uYqIrUAiLh2dKml8Wjg';
 
-function getPosts(){
-  try{const r=localStorage.getItem('mf_posts');if(r)return JSON.parse(r);}catch(e){}
-  return SEED_POSTS;
+async function sbFetch(path,opts={}){
+  const res=await fetch(`${SUPABASE_URL}/rest/v1/${path}`,{
+    headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':`Bearer ${SUPABASE_ANON_KEY}`,'Content-Type':'application/json','Prefer':opts.prefer||'return=representation',...(opts.headers||{})},
+    method:opts.method||'GET',body:opts.body||undefined
+  });
+  if(!res.ok)throw new Error(await res.text());
+  const t=await res.text();return t?JSON.parse(t):null;
 }
 
-// ── RENDER TAG FILTERS ──
+let ALL_POSTS=[];
+
+async function loadPosts(){
+  try{ ALL_POSTS=await sbFetch('posts?order=created_at.desc')||[]; }
+  catch(e){ ALL_POSTS=[]; }
+}
+
 function renderFilters(posts){
   const tags=['all',...new Set(posts.map(p=>p.tag).filter(Boolean))];
-  const filtersEl=document.getElementById('blog-filters');
-  filtersEl.innerHTML=tags.map(t=>`
-    <button class="blog-filter-btn${t==='all'?' active':''}" data-tag="${t}">
-      ${t==='all'?'✦ All':t}
-    </button>`).join('');
-  filtersEl.querySelectorAll('.blog-filter-btn').forEach(btn=>{
+  const f=document.getElementById('blog-filters');
+  f.innerHTML=tags.map(t=>`<button class="blog-filter-btn${t==='all'?' active':''}" data-tag="${t}">${t==='all'?'✦ All':t}</button>`).join('');
+  f.querySelectorAll('.blog-filter-btn').forEach(btn=>{
     btn.addEventListener('click',()=>{
-      filtersEl.querySelectorAll('.blog-filter-btn').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      renderList(btn.dataset.tag);
+      f.querySelectorAll('.blog-filter-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active'); renderList(btn.dataset.tag);
     });
   });
 }
 
-// ── RENDER POST LIST ──
 function renderList(activeTag='all'){
-  const posts=getPosts();
   const wrap=document.getElementById('blog-list-wrap');
-  const filtered=activeTag==='all'?posts:posts.filter(p=>p.tag===activeTag);
-
-  if(!filtered.length){
-    wrap.innerHTML=`<div class="blog-empty"><span>✦</span><p>No posts yet — check back soon!</p></div>`;
-    return;
-  }
-
-  let html='';
-
-  // First post as featured
+  const filtered=activeTag==='all'?ALL_POSTS:ALL_POSTS.filter(p=>p.tag===activeTag);
+  if(!filtered.length){wrap.innerHTML=`<div class="blog-empty"><span>✦</span><p>No posts yet — check back soon!</p></div>`;return;}
   const [featured,...rest]=filtered;
-  html+=`<a class="post-featured" href="#post-${featured.id}">
-    <div class="post-featured-img"><img src="${featured.coverImage}" alt="${featured.title}" loading="lazy"/></div>
+  let html=`<a class="post-featured" href="#post-${featured.id}">
+    <div class="post-featured-img"><img src="${featured.cover_image}" alt="${featured.title}" loading="lazy"/></div>
     <div class="post-featured-body">
       ${featured.tag?`<div class="post-tag">${featured.tag}</div>`:''}
       <h2>${featured.title}</h2>
       <p>${featured.excerpt||''}</p>
-      <div class="post-meta">
-        <span>📅 ${featured.date||''}</span>
-        <span>⏱ ${featured.readTime||''}</span>
-      </div>
+      <div class="post-meta"><span>📅 ${featured.post_date||''}</span><span>⏱ ${featured.read_time||''}</span></div>
       <div class="read-more">Read more →</div>
     </div>
   </a>`;
-
-  if(rest.length){
-    html+=`<div class="posts-grid">${rest.map(p=>`
-      <a class="post-card" href="#post-${p.id}">
-        <div class="post-card-img"><img src="${p.coverImage}" alt="${p.title}" loading="lazy"/></div>
-        <div class="post-card-body">
-          ${p.tag?`<div class="post-tag" style="margin-bottom:8px">${p.tag}</div>`:''}
-          <h3>${p.title}</h3>
-          <p>${p.excerpt||''}</p>
-          <div class="post-card-meta"><span>📅 ${p.date||''}</span><span>· ${p.readTime||''}</span></div>
-        </div>
-      </a>`).join('')}
-    </div>`;
-  }
-
+  if(rest.length) html+=`<div class="posts-grid">${rest.map(p=>`
+    <a class="post-card" href="#post-${p.id}">
+      <div class="post-card-img"><img src="${p.cover_image}" alt="${p.title}" loading="lazy"/></div>
+      <div class="post-card-body">
+        ${p.tag?`<div class="post-tag" style="margin-bottom:8px">${p.tag}</div>`:''}
+        <h3>${p.title}</h3>
+        <p>${p.excerpt||''}</p>
+        <div class="post-card-meta"><span>📅 ${p.post_date||''}</span><span>· ${p.read_time||''}</span></div>
+      </div>
+    </a>`).join('')}</div>`;
   wrap.innerHTML=html;
 }
 
-// ── RENDER SINGLE POST ──
 function renderPost(id){
-  const posts=getPosts();
-  const post=posts.find(p=>p.id===id);
+  const post=ALL_POSTS.find(p=>String(p.id)===String(id));
   if(!post)return false;
-
   let contentHtml='';
   (post.content||[]).forEach(block=>{
     if(block.type==='p') contentHtml+=`<p>${block.text}</p>`;
     else if(block.type==='h2') contentHtml+=`<h2>${block.text}</h2>`;
     else if(block.type==='h3') contentHtml+=`<h3>${block.text}</h3>`;
     else if(block.type==='blockquote') contentHtml+=`<blockquote>${block.text}</blockquote>`;
-    else if(block.type==='hr') contentHtml+=`<hr/>`;
     else if(block.type==='ul') contentHtml+=`<ul>${(block.items||[]).map(i=>`<li>${i}</li>`).join('')}</ul>`;
     else if(block.type==='ol') contentHtml+=`<ol>${(block.items||[]).map(i=>`<li>${i}</li>`).join('')}</ol>`;
     else if(block.type==='numbered'){
@@ -323,53 +205,35 @@ function renderPost(id){
         </div>`).join('')}</div>`;
     }
   });
-
   document.getElementById('post-detail-inner').innerHTML=`
-    <div class="post-detail-cover"><img src="${post.coverImage}" alt="${post.title}"/></div>
+    <div class="post-detail-cover"><img src="${post.cover_image}" alt="${post.title}"/></div>
     ${post.tag?`<div class="post-detail-tag">${post.tag}</div>`:''}
     <h1>${post.title}</h1>
     <div class="post-detail-meta">
-      ${post.date?`<span>📅 ${post.date}</span>`:''}
-      ${post.readTime?`<span>⏱ ${post.readTime}</span>`:''}
+      ${post.post_date?`<span>📅 ${post.post_date}</span>`:''}
+      ${post.read_time?`<span>⏱ ${post.read_time}</span>`:''}
     </div>
     <div class="post-content">${contentHtml}</div>`;
   return true;
 }
 
-// ── ROUTING ──
-function goBack(){
-  history.pushState(null,null,'blog.html');
-  showList();
-}
-
-function showList(){
-  document.getElementById('blog-list-view').style.display='block';
-  document.getElementById('post-detail-view').style.display='none';
-  window.scrollTo(0,0);
-}
-
-function showPost(id){
-  const ok=renderPost(id);
-  if(!ok){showList();return;}
-  document.getElementById('blog-list-view').style.display='none';
-  document.getElementById('post-detail-view').style.display='block';
-  window.scrollTo(0,0);
-}
+function goBack(){history.pushState(null,null,'blog.html');showList();}
+function showList(){document.getElementById('blog-list-view').style.display='block';document.getElementById('post-detail-view').style.display='none';window.scrollTo(0,0);}
+function showPost(id){const ok=renderPost(id);if(!ok){showList();return;}document.getElementById('blog-list-view').style.display='none';document.getElementById('post-detail-view').style.display='block';window.scrollTo(0,0);}
 
 function route(){
-  const hash=window.location.hash;
-  const m=hash.match(/^#post-(.+)$/);
-  if(m) showPost(m[1]);
-  else showList();
+  const m=window.location.hash.match(/^#post-(.+)$/);
+  if(m) showPost(m[1]); else showList();
 }
-
 window.addEventListener('hashchange',route);
 
-// Init
-const posts=getPosts();
-renderFilters(posts);
-renderList();
-route();
+async function init(){
+  await loadPosts();
+  renderFilters(ALL_POSTS);
+  renderList();
+  route();
+}
+init();
 </script>
 </body>
 </html>
