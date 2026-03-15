@@ -110,6 +110,51 @@ main{max-width:1160px;margin:0 auto;padding:28px 16px 64px}
 .empty{text-align:center;padding:60px 20px;color:var(--muted)}
 .empty span{font-size:32px;display:block;margin-bottom:10px}
 
+/* BACK BUTTON */
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--rose3);text-decoration:none;padding:8px 0;margin-bottom:20px;font-weight:500;-webkit-tap-highlight-color:transparent}
+.back-btn:hover{color:var(--rose4)}
+
+/* DETAIL WRAP */
+.detail-wrap{max-width:680px;margin:0 auto;padding:24px 16px 80px}
+
+/* PIN DETAIL */
+.detail-card{background:#fff;border-radius:20px;border:1px solid var(--rose2);overflow:hidden}
+.detail-img-wrap{width:100%;aspect-ratio:1;overflow:hidden;background:var(--rose)}
+.detail-img-wrap img{width:100%;height:100%;object-fit:cover}
+.detail-body{padding:20px 20px 24px}
+.detail-cat{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--rose3);font-weight:500;background:var(--rose);border-radius:100px;padding:3px 12px;display:inline-block;margin-bottom:12px}
+.detail-body h1{font-family:'Playfair Display',serif;font-size:clamp(22px,5vw,30px);font-weight:400;margin-bottom:10px;line-height:1.2}
+.detail-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px}
+.amz-btn-lg{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--amz);color:#111;border-radius:12px;padding:14px 20px;font-size:15px;font-weight:700;text-decoration:none;transition:background .15s;-webkit-tap-highlight-color:transparent;margin-bottom:12px}
+.amz-btn-lg:active,.amz-btn-lg:hover{background:#e08600}
+.affiliate-note{font-size:11px;color:var(--muted);line-height:1.6}
+
+/* GROUP DETAIL */
+.detail-group-card{background:#fff;border-radius:20px;border:1px solid var(--rose2);overflow:hidden}
+.detail-group-cover{position:relative;height:220px;overflow:hidden;background:var(--rose)}
+.detail-group-cover img{width:100%;height:100%;object-fit:cover}
+.detail-group-cover-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(46,32,32,.65) 0%,transparent 55%)}
+.detail-group-cover-text{position:absolute;bottom:0;left:0;right:0;padding:20px}
+.detail-group-cover-text h1{font-family:'Playfair Display',serif;font-size:clamp(18px,4vw,24px);font-weight:400;color:#fff;line-height:1.25;margin-bottom:4px}
+.detail-group-cover-text p{font-size:12.5px;color:rgba(255,255,255,.8);line-height:1.5}
+.detail-group-items{padding:16px 16px 8px;display:flex;flex-direction:column;gap:10px}
+.detail-group-count{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--rose3);font-weight:500;margin-bottom:4px}
+.detail-group-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:var(--light);border:1px solid var(--rose2);text-decoration:none;color:var(--text);transition:background .15s;-webkit-tap-highlight-color:transparent}
+.detail-group-item:active,.detail-group-item:hover{background:var(--rose)}
+.dgi-num{font-family:'Playfair Display',serif;font-size:18px;color:var(--rose2);width:24px;text-align:center;flex-shrink:0}
+.detail-group-item img{width:56px;height:56px;border-radius:10px;object-fit:cover;flex-shrink:0;background:var(--rose2)}
+.dgi-info{flex:1;min-width:0}
+.dgi-info strong{font-size:14px;font-weight:500;display:block;margin-bottom:2px}
+.dgi-info span{font-size:11.5px;color:var(--rose3)}
+.amz-pill-lg{background:var(--amz-light);border-radius:6px;padding:4px 9px;font-size:10px;font-weight:700;color:var(--amz-dark);white-space:nowrap;flex-shrink:0}
+
+/* GROUP CARD — now an <a> tag */
+.group-card{background:#fff;border-radius:18px;border:1px solid var(--rose2);min-width:min(80vw,280px);max-width:min(80vw,280px);overflow:hidden;flex-shrink:0;transition:transform .22s,box-shadow .22s;text-decoration:none;color:inherit;display:block;-webkit-tap-highlight-color:transparent}
+.group-card:active{transform:scale(.98)}
+@media(hover:hover){.group-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(180,100,120,.13)}}
+.group-item-preview{display:flex;align-items:center;gap:8px;padding:5px 0}
+.group-see-all{font-size:11.5px;color:var(--rose3);font-weight:500;margin-top:8px;padding-top:8px;border-top:1px solid var(--rose2)}
+
 /* FOOTER */
 footer{text-align:center;padding:24px 16px;border-top:1px solid var(--rose2);font-size:11px;color:var(--muted)}
 </style>
@@ -146,10 +191,12 @@ footer{text-align:center;padding:24px 16px;border-top:1px solid var(--rose2);fon
 </nav>
 
 <main id="main"></main>
+<div id="detail" style="display:none"></div>
 
 <footer>made with love by sahar &nbsp;✦&nbsp; some links are affiliate links</footer>
 
 <script>
+// ── SEED DATA ──
 const SEED={
   groups:[
     {id:'g1',category:'home',title:'5 Must-Have Home Decor Items Under Budget',description:'Affordable pieces that look a million dollars',coverImage:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80',items:[
@@ -185,6 +232,94 @@ const CATS=[
   {key:'skincare',label:'Skincare',emoji:'🧴',iconClass:'ic-skincare'},
 ];
 
+// ── DETAIL VIEW ──
+// Shows a full-page detail when URL is #pin-ID or #group-ID
+function showDetail(hash){
+  const data=getData();
+  const detail=document.getElementById('detail');
+  const main=document.getElementById('main');
+  const hero=document.querySelector('.hero');
+  const nav=document.querySelector('nav');
+
+  if(!hash||hash==='#'){
+    detail.style.display='none';
+    main.style.display='';
+    if(hero)hero.style.display='';
+    return;
+  }
+
+  const pinMatch=hash.match(/^#pin-(.+)$/);
+  const groupMatch=hash.match(/^#group-(.+)$/);
+
+  if(pinMatch){
+    const p=data.pins.find(x=>x.id===pinMatch[1]);
+    if(!p){detail.style.display='none';main.style.display='';return;}
+    detail.style.display='block';
+    main.style.display='none';
+    if(hero)hero.style.display='none';
+    const catLabel={travel:'Travel Essentials',home:'Home Decor Finds',fashion:'Modest Fashion',skincare:'Skincare'};
+    detail.innerHTML=`
+      <div class="detail-wrap">
+        <a class="back-btn" href="#">← Back to all finds</a>
+        <div class="detail-card">
+          <div class="detail-img-wrap">
+            <img src="${p.image}" alt="${p.title}"/>
+          </div>
+          <div class="detail-body">
+            <span class="detail-cat">${catLabel[p.category]||p.category}</span>
+            <h1>${p.title}</h1>
+            <p class="detail-desc">${p.description||''}</p>
+            <a class="amz-btn-lg" href="${p.link}" target="_blank" rel="noopener">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Shop on Amazon
+            </a>
+            <p class="affiliate-note">* Affiliate link — I may earn a small commission at no extra cost to you.</p>
+          </div>
+        </div>
+      </div>`;
+  } else if(groupMatch){
+    const g=data.groups.find(x=>x.id===groupMatch[1]);
+    if(!g){detail.style.display='none';main.style.display='';return;}
+    detail.style.display='block';
+    main.style.display='none';
+    if(hero)hero.style.display='none';
+    detail.innerHTML=`
+      <div class="detail-wrap">
+        <a class="back-btn" href="#">← Back to all finds</a>
+        <div class="detail-group-card">
+          <div class="detail-group-cover">
+            <img src="${g.coverImage}" alt="${g.title}"/>
+            <div class="detail-group-cover-overlay"></div>
+            <div class="detail-group-cover-text">
+              <h1>${g.title}</h1>
+              <p>${g.description||''}</p>
+            </div>
+          </div>
+          <div class="detail-group-items">
+            <p class="detail-group-count">${g.items.length} items in this collection</p>
+            ${g.items.map((it,i)=>`
+              <a class="detail-group-item" href="${it.link}" target="_blank" rel="noopener">
+                <span class="dgi-num">${i+1}</span>
+                <img src="${it.image}" alt="${it.title}" onerror="this.style.opacity='.3'"/>
+                <div class="dgi-info">
+                  <strong>${it.title}</strong>
+                  <span>View on Amazon →</span>
+                </div>
+                <div class="amz-pill-lg">amazon</div>
+              </a>`).join('')}
+          </div>
+          <p class="affiliate-note" style="padding:0 20px 20px">* Affiliate links — I may earn a small commission at no extra cost to you.</p>
+        </div>
+      </div>`;
+  } else {
+    detail.style.display='none';
+    main.style.display='';
+    if(hero)hero.style.display='';
+  }
+  window.scrollTo(0,0);
+}
+
+// ── GRID RENDERING ──
 let activeFilter='all',searchQ='';
 
 function match(item){
@@ -194,7 +329,8 @@ function match(item){
 }
 
 function groupCard(g){
-  return`<div class="group-card">
+  // Card itself links to the detail page via hash
+  return`<a class="group-card" href="#group-${g.id}">
     <div class="group-cover">
       <img src="${g.coverImage}" alt="${g.title}" loading="lazy"/>
       <span class="group-count">${g.items.length} items</span>
@@ -202,19 +338,20 @@ function groupCard(g){
     <div class="group-body">
       <h3>${g.title}</h3>
       <p class="gdesc">${g.description||''}</p>
-      <div class="group-items">${g.items.map(it=>`
-        <a class="group-item" href="${it.link}" target="_blank" rel="noopener">
+      <div class="group-items">${g.items.slice(0,3).map(it=>`
+        <div class="group-item-preview">
           <img class="gitem-img" src="${it.image}" alt="${it.title}" loading="lazy"/>
-          <div class="gitem-info"><span>${it.title}</span><small>View on Amazon</small></div>
-          <span class="amz-pill">amazon</span>
-        </a>`).join('')}
+          <div class="gitem-info"><span>${it.title}</span></div>
+        </div>`).join('')}
       </div>
+      <div class="group-see-all">See all ${g.items.length} items →</div>
     </div>
-  </div>`;
+  </a>`;
 }
 
 function pinCard(p){
-  return`<a class="pin-card" href="${p.link}" target="_blank" rel="noopener">
+  // Card links to the detail page via hash
+  return`<a class="pin-card" href="#pin-${p.id}">
     <div class="pin-img"><img src="${p.image}" alt="${p.title}" loading="lazy"/></div>
     <div class="pin-body">
       <h4>${p.title}</h4>
@@ -253,15 +390,30 @@ function render(){
   main.innerHTML=html;
 }
 
+// ── HASH ROUTING ──
+function route(){
+  const hash=window.location.hash;
+  const isPinOrGroup=hash.startsWith('#pin-')||hash.startsWith('#group-');
+  if(isPinOrGroup){
+    showDetail(hash);
+  } else {
+    showDetail(null);
+    render();
+  }
+}
+
+window.addEventListener('hashchange',route);
 document.querySelectorAll('.filter-btn').forEach(btn=>{
   btn.addEventListener('click',()=>{
     activeFilter=btn.dataset.filter;
     document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');render();
+    btn.classList.add('active');
+    render();
   });
 });
 document.getElementById('search').addEventListener('input',e=>{searchQ=e.target.value;render();});
-render();
+
+route(); // run on load
 </script>
 </body>
 </html>
