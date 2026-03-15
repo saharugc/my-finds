@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>My Curated Finds</title>
+<title>Sahar's Favourite Finds</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -28,47 +28,42 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);min
 .hero-bio p{margin-bottom:8px}
 .hero-bio p:last-child{margin-bottom:0}
 .hero-affiliate{font-size:11.5px;color:var(--muted);line-height:1.65;max-width:480px;margin:10px auto 0;text-align:left;padding:10px 14px;background:rgba(255,255,255,.55);border-radius:10px;border:1px solid var(--rose2)}
-.hero-dots span{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--rose3);margin:0 4px;opacity:.5}
-.hero-dots span:nth-child(2){opacity:1}
 
-/* STICKY NAV */
+/* NAV */
 nav{background:rgba(255,250,246,.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--rose2);position:sticky;top:0;z-index:100}
 .nav-top{max-width:1160px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:0 16px;height:52px}
 .nav-logo{font-family:'Playfair Display',serif;font-size:17px;color:var(--text);margin-right:auto}
+.blog-nav-link{font-size:12.5px;color:var(--rose3);text-decoration:none;padding:5px 13px;border-radius:100px;border:1px solid var(--rose2);background:var(--rose);white-space:nowrap;font-weight:500;transition:all .18s;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+.blog-nav-link:hover,.blog-nav-link:active{background:var(--rose3);color:#fff;border-color:var(--rose3)}
 .search-wrap{position:relative;flex-shrink:0}
 .search-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--muted)}
 #search{padding:7px 12px 7px 31px;border-radius:100px;border:1px solid var(--rose2);background:var(--sand);font-family:'Jost',sans-serif;font-size:13px;color:var(--text);width:140px;outline:none;transition:all .25s}
 #search:focus{border-color:var(--rose3);width:180px}
 #search::placeholder{color:var(--muted)}
-
-/* FILTER ROW — scrollable on mobile */
 .filter-row{display:flex;gap:7px;padding:8px 16px 10px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;border-top:1px solid var(--rose2)}
 .filter-row::-webkit-scrollbar{display:none}
 .filter-btn{padding:5px 15px;border-radius:100px;border:1px solid var(--rose2);background:transparent;font-family:'Jost',sans-serif;font-size:12.5px;color:var(--muted);cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0;-webkit-tap-highlight-color:transparent}
 .filter-btn:active,.filter-btn:hover{background:var(--rose);color:var(--text)}
 .filter-btn.active{background:var(--rose3);border-color:var(--rose3);color:#fff}
 
+/* LOADING */
+.loading{text-align:center;padding:60px 20px;color:var(--muted)}
+.loading-spinner{width:32px;height:32px;border:2px solid var(--rose2);border-top-color:var(--rose3);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
 /* MAIN */
 main{max-width:1160px;margin:0 auto;padding:28px 16px 64px}
-
-/* CATEGORY BLOCK */
 .cat-block{margin-bottom:52px}
 .cat-title-row{display:flex;align-items:center;gap:12px;margin-bottom:22px;padding-bottom:14px;border-bottom:1.5px solid var(--rose2)}
 .cat-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
 .ic-travel{background:var(--lav)}.ic-home{background:var(--sage)}.ic-fashion{background:var(--rose)}.ic-skincare{background:var(--sand)}
 .cat-title-text h2{font-family:'Playfair Display',serif;font-size:clamp(20px,5vw,26px);font-weight:400;line-height:1}
 .cat-title-text p{font-size:11px;color:var(--muted);margin-top:3px}
-
-/* SUBSECTION LABEL */
 .sub-label{font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--rose3);font-weight:500;margin-bottom:13px;display:flex;align-items:center;gap:8px}
 .sub-label::after{content:'';flex:1;height:1px;background:var(--rose2)}
-
-/* GROUPS RAIL */
 .groups-rail{display:flex;gap:14px;overflow-x:auto;padding-bottom:8px;margin-bottom:32px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .groups-rail::-webkit-scrollbar{display:none}
-
-/* GROUP CARD */
-.group-card{background:#fff;border-radius:18px;border:1px solid var(--rose2);min-width:min(80vw,280px);max-width:min(80vw,280px);overflow:hidden;flex-shrink:0;transition:transform .22s,box-shadow .22s}
+.group-card{background:#fff;border-radius:18px;border:1px solid var(--rose2);min-width:min(80vw,280px);max-width:min(80vw,280px);overflow:hidden;flex-shrink:0;transition:transform .22s,box-shadow .22s;text-decoration:none;color:inherit;display:block;-webkit-tap-highlight-color:transparent}
 .group-card:active{transform:scale(.98)}
 @media(hover:hover){.group-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(180,100,120,.13)}}
 .group-cover{position:relative;height:150px;overflow:hidden;background:var(--rose)}
@@ -79,20 +74,13 @@ main{max-width:1160px;margin:0 auto;padding:28px 16px 64px}
 .group-body h3{font-family:'Playfair Display',serif;font-size:14.5px;font-weight:500;margin-bottom:4px;line-height:1.35}
 .group-body .gdesc{font-size:11.5px;color:var(--muted);line-height:1.5;margin-bottom:11px}
 .group-items{display:flex;flex-direction:column;gap:6px}
-.group-item{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:9px;background:var(--light);border:1px solid var(--rose2);text-decoration:none;color:var(--text);transition:background .15s;-webkit-tap-highlight-color:transparent}
-.group-item:active{background:var(--rose)}
-@media(hover:hover){.group-item:hover{background:var(--rose)}}
+.group-item-preview{display:flex;align-items:center;gap:8px;padding:5px 0}
 .gitem-img{width:32px;height:32px;border-radius:7px;object-fit:cover;flex-shrink:0;background:var(--rose2)}
-.gitem-info{flex:1;min-width:0}
-.gitem-info span{font-size:11.5px;font-weight:500;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.gitem-info small{font-size:10px;color:var(--rose3)}
-.amz-pill{background:var(--amz-light);border-radius:4px;padding:2px 6px;font-size:9px;font-weight:700;color:var(--amz-dark);white-space:nowrap;flex-shrink:0;letter-spacing:.3px}
-
-/* INDIVIDUAL FINDS GRID — 2-col mobile, scales up */
+.gitem-info span{font-size:11.5px;font-weight:500}
+.group-see-all{font-size:11.5px;color:var(--rose3);font-weight:500;margin-top:8px;padding-top:8px;border-top:1px solid var(--rose2)}
 .pins-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
 @media(min-width:600px){.pins-grid{grid-template-columns:repeat(3,1fr);gap:14px}}
 @media(min-width:900px){.pins-grid{grid-template-columns:repeat(4,1fr);gap:16px}}
-
 .pin-card{background:#fff;border-radius:16px;overflow:hidden;border:1px solid var(--rose2);text-decoration:none;color:inherit;display:flex;flex-direction:column;-webkit-tap-highlight-color:transparent;transition:transform .2s,box-shadow .2s}
 .pin-card:active{transform:scale(.97)}
 @media(hover:hover){.pin-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(180,100,120,.12)}}
@@ -102,22 +90,14 @@ main{max-width:1160px;margin:0 auto;padding:28px 16px 64px}
 .pin-body{padding:10px 11px 12px;display:flex;flex-direction:column;flex:1}
 .pin-body h4{font-family:'Playfair Display',serif;font-size:13px;font-weight:500;margin-bottom:4px;line-height:1.3}
 .pin-body p{font-size:11px;color:var(--muted);line-height:1.45;margin-bottom:9px;flex:1}
-.amz-btn{display:flex;align-items:center;justify-content:center;gap:5px;background:var(--amz);color:#111;border-radius:8px;padding:7px 8px;font-size:11px;font-weight:700;letter-spacing:.2px;text-decoration:none;transition:background .15s;-webkit-tap-highlight-color:transparent}
+.amz-btn{display:flex;align-items:center;justify-content:center;gap:5px;background:var(--amz);color:#111;border-radius:8px;padding:7px 8px;font-size:11px;font-weight:700;-webkit-tap-highlight-color:transparent}
 .amz-btn:active{background:#e08600}
 @media(hover:hover){.amz-btn:hover{background:#e08600}}
 
-/* EMPTY */
-.empty{text-align:center;padding:60px 20px;color:var(--muted)}
-.empty span{font-size:32px;display:block;margin-bottom:10px}
-
-/* BACK BUTTON */
-.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--rose3);text-decoration:none;padding:8px 0;margin-bottom:20px;font-weight:500;-webkit-tap-highlight-color:transparent}
+/* DETAIL */
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--rose3);text-decoration:none;padding:8px 0;margin-bottom:20px;font-weight:500;-webkit-tap-highlight-color:transparent;background:none;border:none;cursor:pointer}
 .back-btn:hover{color:var(--rose4)}
-
-/* DETAIL WRAP */
 .detail-wrap{max-width:680px;margin:0 auto;padding:24px 16px 80px}
-
-/* PIN DETAIL */
 .detail-card{background:#fff;border-radius:20px;border:1px solid var(--rose2);overflow:hidden}
 .detail-img-wrap{width:100%;aspect-ratio:1;overflow:hidden;background:var(--rose)}
 .detail-img-wrap img{width:100%;height:100%;object-fit:cover}
@@ -128,8 +108,6 @@ main{max-width:1160px;margin:0 auto;padding:28px 16px 64px}
 .amz-btn-lg{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--amz);color:#111;border-radius:12px;padding:14px 20px;font-size:15px;font-weight:700;text-decoration:none;transition:background .15s;-webkit-tap-highlight-color:transparent;margin-bottom:12px}
 .amz-btn-lg:active,.amz-btn-lg:hover{background:#e08600}
 .affiliate-note{font-size:11px;color:var(--muted);line-height:1.6}
-
-/* GROUP DETAIL */
 .detail-group-card{background:#fff;border-radius:20px;border:1px solid var(--rose2);overflow:hidden}
 .detail-group-cover{position:relative;height:220px;overflow:hidden;background:var(--rose)}
 .detail-group-cover img{width:100%;height:100%;object-fit:cover}
@@ -148,14 +126,29 @@ main{max-width:1160px;margin:0 auto;padding:28px 16px 64px}
 .dgi-info span{font-size:11.5px;color:var(--rose3)}
 .amz-pill-lg{background:var(--amz-light);border-radius:6px;padding:4px 9px;font-size:10px;font-weight:700;color:var(--amz-dark);white-space:nowrap;flex-shrink:0}
 
-/* GROUP CARD — now an <a> tag */
-.group-card{background:#fff;border-radius:18px;border:1px solid var(--rose2);min-width:min(80vw,280px);max-width:min(80vw,280px);overflow:hidden;flex-shrink:0;transition:transform .22s,box-shadow .22s;text-decoration:none;color:inherit;display:block;-webkit-tap-highlight-color:transparent}
-.group-card:active{transform:scale(.98)}
-@media(hover:hover){.group-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(180,100,120,.13)}}
-.group-item-preview{display:flex;align-items:center;gap:8px;padding:5px 0}
-.group-see-all{font-size:11.5px;color:var(--rose3);font-weight:500;margin-top:8px;padding-top:8px;border-top:1px solid var(--rose2)}
+/* BLOG STRIP */
+.blog-strip-wrap{max-width:1160px;margin:0 auto;padding:0 16px 60px}
+.blog-strip-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px;padding-top:48px;border-top:1.5px solid var(--rose2)}
+.blog-strip-eyebrow{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--rose3);margin-bottom:4px}
+.blog-strip-title{font-family:'Playfair Display',serif;font-size:clamp(20px,4vw,26px);font-weight:400}
+.blog-strip-all{font-size:12.5px;color:var(--rose3);text-decoration:none;font-weight:500;white-space:nowrap;padding:5px 14px;border:1px solid var(--rose2);border-radius:100px;background:var(--rose);transition:all .18s}
+.blog-strip-all:hover{background:var(--rose3);color:#fff;border-color:var(--rose3)}
+.blog-strip-grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:480px){.blog-strip-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:760px){.blog-strip-grid{grid-template-columns:repeat(3,1fr)}}
+.blog-strip-card{background:#fff;border-radius:16px;border:1px solid var(--rose2);overflow:hidden;text-decoration:none;color:inherit;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s;-webkit-tap-highlight-color:transparent}
+.blog-strip-card:active{transform:scale(.98)}
+@media(hover:hover){.blog-strip-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(180,100,120,.12)}}
+.bsc-img{aspect-ratio:16/9;overflow:hidden;background:var(--rose)}
+.bsc-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s}
+@media(hover:hover){.blog-strip-card:hover .bsc-img img{transform:scale(1.05)}}
+.bsc-body{padding:13px 14px 15px;flex:1;display:flex;flex-direction:column}
+.bsc-tag{font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--rose3);margin-bottom:5px;font-weight:500}
+.bsc-body h3{font-family:'Playfair Display',serif;font-size:14.5px;font-weight:400;line-height:1.3;margin-bottom:5px;flex:1}
+.bsc-meta{font-size:10.5px;color:var(--muted)}
 
-/* FOOTER */
+.empty{text-align:center;padding:60px 20px;color:var(--muted)}
+.empty span{font-size:32px;display:block;margin-bottom:10px}
 footer{text-align:center;padding:24px 16px;border-top:1px solid var(--rose2);font-size:11px;color:var(--muted)}
 </style>
 </head>
@@ -176,6 +169,7 @@ footer{text-align:center;padding:24px 16px;border-top:1px solid var(--rose2);fon
 <nav>
   <div class="nav-top">
     <div class="nav-logo">sahar's finds ✦</div>
+    <a href="blog.html" class="blog-nav-link">Blog ✍️</a>
     <div class="search-wrap">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
       <input id="search" type="text" placeholder="Search…"/>
@@ -190,41 +184,50 @@ footer{text-align:center;padding:24px 16px;border-top:1px solid var(--rose2);fon
   </div>
 </nav>
 
-<main id="main"></main>
+<main id="main"><div class="loading"><div class="loading-spinner"></div><p>Loading finds…</p></div></main>
 <div id="detail" style="display:none"></div>
+
+<div id="blog-strip" style="display:none">
+  <div class="blog-strip-wrap">
+    <div class="blog-strip-header">
+      <div><p class="blog-strip-eyebrow">from the journal</p><h2 class="blog-strip-title">Latest from the Blog</h2></div>
+      <a href="blog.html" class="blog-strip-all">See all posts →</a>
+    </div>
+    <div class="blog-strip-grid" id="blog-strip-grid"></div>
+  </div>
+</div>
 
 <footer>made with love by sahar &nbsp;✦&nbsp; some links are affiliate links</footer>
 
 <script>
-// ── SEED DATA ──
-const SEED={
-  groups:[
-    {id:'g1',category:'home',title:'5 Must-Have Home Decor Items Under Budget',description:'Affordable pieces that look a million dollars',coverImage:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80',items:[
-      {title:'Rattan Wall Mirror',image:'https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?w=120&q=70',link:'https://amazon.com'},
-      {title:'Linen Throw Pillows',image:'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=120&q=70',link:'https://amazon.com'},
-      {title:'Ceramic Vase Set',image:'https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?w=120&q=70',link:'https://amazon.com'},
-    ]},
-    {id:'g2',category:'travel',title:'My Carry-On Essentials for Long Haul Flights',description:'Everything that fits in one bag and keeps me sane',coverImage:'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80',items:[
-      {title:'Compression Packing Cubes',image:'https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=120&q=70',link:'https://amazon.com'},
-      {title:'Neck Pillow Pro',image:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&q=70',link:'https://amazon.com'},
-    ]},
-    {id:'g3',category:'skincare',title:'Glass Skin Routine: 5 Products I Swear By',description:'Korean skincare steps that actually work',coverImage:'https://images.unsplash.com/photo-1570194065650-d99fb4bedf0a?w=600&q=80',items:[
-      {title:'Snail Mucin Essence',image:'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=120&q=70',link:'https://amazon.com'},
-      {title:'Centella Serum',image:'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=120&q=70',link:'https://amazon.com'},
-    ]},
-  ],
-  pins:[
-    {id:'p1',category:'home',title:'Aesthetic Bedside Lamp',description:'Warm glow, minimal design',image:'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=400&q=80',link:'https://amazon.com'},
-    {id:'p2',category:'travel',title:'Collapsible Water Bottle',description:'Lightweight and leak-proof for on-the-go',image:'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&q=80',link:'https://amazon.com'},
-    {id:'p3',category:'fashion',title:'Flowy Midi Skirt',description:'Modest, effortless and versatile',image:'https://images.unsplash.com/photo-1594938298603-c8148c4b4357?w=400&q=80',link:'https://amazon.com'},
-    {id:'p4',category:'fashion',title:'Linen Wide-Leg Trousers',description:'Breathable and chic for summer',image:'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=400&q=80',link:'https://amazon.com'},
-    {id:'p5',category:'skincare',title:'SPF 50 Mineral Sunscreen',description:'Zero white cast, all skin tones',image:'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&q=80',link:'https://amazon.com'},
-    {id:'p6',category:'home',title:'Scented Soy Candle Set',description:'Hours of ambient fragrance',image:'https://images.unsplash.com/photo-1512389142860-9c449e58a543?w=400&q=80',link:'https://amazon.com'},
-  ]
+// ── ⚙️ SUPABASE CONFIG — paste your values here ──
+const SUPABASE_URL = 'https://zcyqynlpkzdzilmohnxh.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjeXF5bmxwa3pkemlsbW9obnhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2MDEyODMsImV4cCI6MjA4OTE3NzI4M30.kd568wumwGBsoKEkC0cE1op-uYqIrUAiLh2dKml8Wjg';
+
+// ── DB HELPERS ──
+async function sbFetch(path, opts={}) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+    headers: {
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': opts.prefer || 'return=representation',
+      ...(opts.headers||{})
+    },
+    method: opts.method||'GET',
+    body: opts.body||undefined
+  });
+  if (!res.ok) throw new Error(await res.text());
+  const t = await res.text(); return t ? JSON.parse(t) : null;
+}
+
+const db = {
+  getPins:    ()  => sbFetch('pins?order=created_at.desc'),
+  getGroups:  ()  => sbFetch('groups?order=created_at.desc'),
+  getPosts:   ()  => sbFetch('posts?order=created_at.desc&limit=3'),
 };
 
-function getData(){try{const r=localStorage.getItem('mf_data');if(r)return JSON.parse(r);}catch(e){}return SEED;}
-
+// ── CATS ──
 const CATS=[
   {key:'travel',label:'Travel Essentials',emoji:'✈️',iconClass:'ic-travel'},
   {key:'home',label:'Home Decor Finds',emoji:'🏡',iconClass:'ic-home'},
@@ -232,126 +235,38 @@ const CATS=[
   {key:'skincare',label:'Skincare',emoji:'🧴',iconClass:'ic-skincare'},
 ];
 
-// ── DETAIL VIEW ──
-// Shows a full-page detail when URL is #pin-ID or #group-ID
-function showDetail(hash){
-  const data=getData();
-  const detail=document.getElementById('detail');
-  const main=document.getElementById('main');
-  const hero=document.querySelector('.hero');
-  const nav=document.querySelector('nav');
-
-  if(!hash||hash==='#'){
-    detail.style.display='none';
-    main.style.display='';
-    if(hero)hero.style.display='';
-    return;
-  }
-
-  const pinMatch=hash.match(/^#pin-(.+)$/);
-  const groupMatch=hash.match(/^#group-(.+)$/);
-
-  if(pinMatch){
-    const p=data.pins.find(x=>x.id===pinMatch[1]);
-    if(!p){detail.style.display='none';main.style.display='';return;}
-    detail.style.display='block';
-    main.style.display='none';
-    if(hero)hero.style.display='none';
-    const catLabel={travel:'Travel Essentials',home:'Home Decor Finds',fashion:'Modest Fashion',skincare:'Skincare'};
-    detail.innerHTML=`
-      <div class="detail-wrap">
-        <a class="back-btn" href="#">← Back to all finds</a>
-        <div class="detail-card">
-          <div class="detail-img-wrap">
-            <img src="${p.image}" alt="${p.title}"/>
-          </div>
-          <div class="detail-body">
-            <span class="detail-cat">${catLabel[p.category]||p.category}</span>
-            <h1>${p.title}</h1>
-            <p class="detail-desc">${p.description||''}</p>
-            <a class="amz-btn-lg" href="${p.link}" target="_blank" rel="noopener">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-              Shop on Amazon
-            </a>
-            <p class="affiliate-note">* Affiliate link — I may earn a small commission at no extra cost to you.</p>
-          </div>
-        </div>
-      </div>`;
-  } else if(groupMatch){
-    const g=data.groups.find(x=>x.id===groupMatch[1]);
-    if(!g){detail.style.display='none';main.style.display='';return;}
-    detail.style.display='block';
-    main.style.display='none';
-    if(hero)hero.style.display='none';
-    detail.innerHTML=`
-      <div class="detail-wrap">
-        <a class="back-btn" href="#">← Back to all finds</a>
-        <div class="detail-group-card">
-          <div class="detail-group-cover">
-            <img src="${g.coverImage}" alt="${g.title}"/>
-            <div class="detail-group-cover-overlay"></div>
-            <div class="detail-group-cover-text">
-              <h1>${g.title}</h1>
-              <p>${g.description||''}</p>
-            </div>
-          </div>
-          <div class="detail-group-items">
-            <p class="detail-group-count">${g.items.length} items in this collection</p>
-            ${g.items.map((it,i)=>`
-              <a class="detail-group-item" href="${it.link}" target="_blank" rel="noopener">
-                <span class="dgi-num">${i+1}</span>
-                <img src="${it.image}" alt="${it.title}" onerror="this.style.opacity='.3'"/>
-                <div class="dgi-info">
-                  <strong>${it.title}</strong>
-                  <span>View on Amazon →</span>
-                </div>
-                <div class="amz-pill-lg">amazon</div>
-              </a>`).join('')}
-          </div>
-          <p class="affiliate-note" style="padding:0 20px 20px">* Affiliate links — I may earn a small commission at no extra cost to you.</p>
-        </div>
-      </div>`;
-  } else {
-    detail.style.display='none';
-    main.style.display='';
-    if(hero)hero.style.display='';
-  }
-  window.scrollTo(0,0);
-}
-
-// ── GRID RENDERING ──
-let activeFilter='all',searchQ='';
+let ALL_PINS=[], ALL_GROUPS=[];
+let activeFilter='all', searchQ='';
 
 function match(item){
   const q=searchQ.toLowerCase();
-  return(activeFilter==='all'||item.category===activeFilter)&&
+  return (activeFilter==='all'||item.category===activeFilter) &&
     (!q||item.title.toLowerCase().includes(q)||(item.description||'').toLowerCase().includes(q));
 }
 
 function groupCard(g){
-  // Card itself links to the detail page via hash
-  return`<a class="group-card" href="#group-${g.id}">
+  const items = g.items||[];
+  return `<a class="group-card" href="#group-${g.id}">
     <div class="group-cover">
-      <img src="${g.coverImage}" alt="${g.title}" loading="lazy"/>
-      <span class="group-count">${g.items.length} items</span>
+      <img src="${g.cover_image}" alt="${g.title}" loading="lazy"/>
+      <span class="group-count">${items.length} items</span>
     </div>
     <div class="group-body">
       <h3>${g.title}</h3>
       <p class="gdesc">${g.description||''}</p>
-      <div class="group-items">${g.items.slice(0,3).map(it=>`
+      <div class="group-items">${items.slice(0,3).map(it=>`
         <div class="group-item-preview">
           <img class="gitem-img" src="${it.image}" alt="${it.title}" loading="lazy"/>
           <div class="gitem-info"><span>${it.title}</span></div>
         </div>`).join('')}
       </div>
-      <div class="group-see-all">See all ${g.items.length} items →</div>
+      <div class="group-see-all">See all ${items.length} items →</div>
     </div>
   </a>`;
 }
 
 function pinCard(p){
-  // Card links to the detail page via hash
-  return`<a class="pin-card" href="#pin-${p.id}">
+  return `<a class="pin-card" href="#pin-${p.id}">
     <div class="pin-img"><img src="${p.image}" alt="${p.title}" loading="lazy"/></div>
     <div class="pin-body">
       <h4>${p.title}</h4>
@@ -365,13 +280,12 @@ function pinCard(p){
 }
 
 function render(){
-  const data=getData();
   const main=document.getElementById('main');
   const catsToShow=activeFilter==='all'?CATS:CATS.filter(c=>c.key===activeFilter);
   let html='',any=false;
   catsToShow.forEach(cat=>{
-    const groups=data.groups.filter(g=>g.category===cat.key&&match(g));
-    const pins=data.pins.filter(p=>p.category===cat.key&&match(p));
+    const groups=ALL_GROUPS.filter(g=>g.category===cat.key&&match(g));
+    const pins=ALL_PINS.filter(p=>p.category===cat.key&&match(p));
     if(!groups.length&&!pins.length)return;
     any=true;
     html+=`<div class="cat-block" id="cat-${cat.key}">
@@ -382,38 +296,134 @@ function render(){
           <p>${groups.length} collection${groups.length!==1?'s':''} · ${pins.length} individual find${pins.length!==1?'s':''}</p>
         </div>
       </div>`;
-    if(groups.length)html+=`<div class="sub-label">Curated Collections</div><div class="groups-rail">${groups.map(groupCard).join('')}</div>`;
-    if(pins.length)html+=`<div class="sub-label">Individual Finds</div><div class="pins-grid">${pins.map(pinCard).join('')}</div>`;
+    if(groups.length) html+=`<div class="sub-label">Curated Collections</div><div class="groups-rail">${groups.map(groupCard).join('')}</div>`;
+    if(pins.length)   html+=`<div class="sub-label">Individual Finds</div><div class="pins-grid">${pins.map(pinCard).join('')}</div>`;
     html+=`</div>`;
   });
-  if(!any)html=`<div class="empty"><span>✦</span><p>Nothing found — try a different filter or search.</p></div>`;
+  if(!any) html=`<div class="empty"><span>✦</span><p>Nothing here yet — check back soon!</p></div>`;
   main.innerHTML=html;
 }
 
-// ── HASH ROUTING ──
-function route(){
-  const hash=window.location.hash;
-  const isPinOrGroup=hash.startsWith('#pin-')||hash.startsWith('#group-');
-  if(isPinOrGroup){
-    showDetail(hash);
+// ── DETAIL VIEW ──
+function showDetail(hash){
+  const detail=document.getElementById('detail');
+  const main=document.getElementById('main');
+  const hero=document.querySelector('.hero');
+  const blogStrip=document.getElementById('blog-strip');
+
+  if(!hash||hash==='#'){
+    detail.style.display='none'; main.style.display='';
+    if(hero)hero.style.display=''; if(blogStrip)blogStrip.style.display='';
+    return;
+  }
+  const pinMatch=hash.match(/^#pin-(.+)$/);
+  const groupMatch=hash.match(/^#group-(.+)$/);
+
+  if(pinMatch){
+    const p=ALL_PINS.find(x=>String(x.id)===pinMatch[1]);
+    if(!p){showDetail(null);return;}
+    detail.style.display='block'; main.style.display='none';
+    if(hero)hero.style.display='none'; if(blogStrip)blogStrip.style.display='none';
+    const catLabel={travel:'Travel Essentials',home:'Home Decor Finds',fashion:'Modest Fashion',skincare:'Skincare'};
+    detail.innerHTML=`<div class="detail-wrap">
+      <button class="back-btn" onclick="history.back()">← Back to all finds</button>
+      <div class="detail-card">
+        <div class="detail-img-wrap"><img src="${p.image}" alt="${p.title}"/></div>
+        <div class="detail-body">
+          <span class="detail-cat">${catLabel[p.category]||p.category}</span>
+          <h1>${p.title}</h1>
+          <p class="detail-desc">${p.description||''}</p>
+          <a class="amz-btn-lg" href="${p.link}" target="_blank" rel="noopener">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Shop on Amazon
+          </a>
+          <p class="affiliate-note">* Affiliate link — I may earn a small commission at no extra cost to you.</p>
+        </div>
+      </div>
+    </div>`;
+
+  } else if(groupMatch){
+    const g=ALL_GROUPS.find(x=>String(x.id)===groupMatch[1]);
+    if(!g){showDetail(null);return;}
+    detail.style.display='block'; main.style.display='none';
+    if(hero)hero.style.display='none'; if(blogStrip)blogStrip.style.display='none';
+    const items=g.items||[];
+    detail.innerHTML=`<div class="detail-wrap">
+      <button class="back-btn" onclick="history.back()">← Back to all finds</button>
+      <div class="detail-group-card">
+        <div class="detail-group-cover">
+          <img src="${g.cover_image}" alt="${g.title}"/>
+          <div class="detail-group-cover-overlay"></div>
+          <div class="detail-group-cover-text"><h1>${g.title}</h1><p>${g.description||''}</p></div>
+        </div>
+        <div class="detail-group-items">
+          <p class="detail-group-count">${items.length} items in this collection</p>
+          ${items.map((it,i)=>`
+            <a class="detail-group-item" href="${it.link}" target="_blank" rel="noopener">
+              <span class="dgi-num">${String(i+1).padStart(2,'0')}</span>
+              <img src="${it.image}" alt="${it.title}" onerror="this.style.opacity='.3'"/>
+              <div class="dgi-info"><strong>${it.title}</strong><span>View on Amazon →</span></div>
+              <div class="amz-pill-lg">amazon</div>
+            </a>`).join('')}
+        </div>
+        <p class="affiliate-note" style="padding:0 20px 20px">* Affiliate links — I may earn a small commission at no extra cost to you.</p>
+      </div>
+    </div>`;
   } else {
     showDetail(null);
-    render();
   }
+  window.scrollTo(0,0);
 }
 
+// ── ROUTING ──
+function route(){
+  const hash=window.location.hash;
+  if(hash.startsWith('#pin-')||hash.startsWith('#group-')){
+    showDetail(hash);
+  } else {
+    showDetail(null); render();
+  }
+}
 window.addEventListener('hashchange',route);
 document.querySelectorAll('.filter-btn').forEach(btn=>{
   btn.addEventListener('click',()=>{
     activeFilter=btn.dataset.filter;
     document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    render();
+    btn.classList.add('active'); render();
   });
 });
-document.getElementById('search').addEventListener('input',e=>{searchQ=e.target.value;render();});
+document.getElementById('search').addEventListener('input',e=>{searchQ=e.target.value; render();});
 
-route(); // run on load
+// ── BLOG STRIP ──
+async function loadBlogStrip(){
+  try{
+    const posts=await db.getPosts();
+    if(!posts||!posts.length){document.getElementById('blog-strip').style.display='none';return;}
+    document.getElementById('blog-strip').style.display='block';
+    document.getElementById('blog-strip-grid').innerHTML=posts.map(p=>`
+      <a class="blog-strip-card" href="blog.html#post-${p.id}">
+        <div class="bsc-img"><img src="${p.cover_image||''}" alt="${p.title}" loading="lazy"/></div>
+        <div class="bsc-body">
+          ${p.tag?`<div class="bsc-tag">${p.tag}</div>`:''}
+          <h3>${p.title}</h3>
+          <div class="bsc-meta">${p.post_date||''} · ${p.read_time||''}</div>
+        </div>
+      </a>`).join('');
+  }catch(e){document.getElementById('blog-strip').style.display='none';}
+}
+
+// ── INIT ──
+async function init(){
+  try{
+    [ALL_PINS, ALL_GROUPS] = await Promise.all([db.getPins(), db.getGroups()]);
+  } catch(e){
+    document.getElementById('main').innerHTML=`<div class="empty"><span>⚠️</span><p>Couldn't load data. Check your Supabase config.</p></div>`;
+    return;
+  }
+  route();
+  loadBlogStrip();
+}
+init();
 </script>
 </body>
 </html>
