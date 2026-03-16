@@ -123,7 +123,13 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .picker-card .tick{display:none;position:absolute;top:4px;right:4px;background:var(--rose3);color:#fff;border-radius:50%;width:18px;height:18px;font-size:11px;align-items:center;justify-content:center}
 .picker-card.selected .tick{display:flex}
 .picker-card{position:relative}
-.spin{width:18px;height:18px;border:2px solid var(--rose2);border-top-color:var(--rose3);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+/* UPLOAD BUTTON */
+.upload-row{margin-top:6px}
+.upload-btn{background:var(--lav);border:1px solid #d4caf0;color:#6050a0;border-radius:8px;padding:6px 14px;font-size:12px;cursor:pointer;font-family:'Jost',sans-serif;transition:background .15s;font-weight:500}
+.upload-btn:hover,.upload-btn:active{background:#d4caf0}
+.upload-btn:disabled{opacity:.6;cursor:not-allowed}
+/* LOADING INLINE */
+.loading-inline{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;padding:20px 0}
 @keyframes spin{to{transform:rotate(360deg)}}
 /* TOAST */
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--text);color:#fff;padding:11px 22px;border-radius:100px;font-size:13px;opacity:0;transition:all .3s;pointer-events:none;z-index:1000;white-space:nowrap}
@@ -227,7 +233,16 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
         <div class="form-row single"><div class="form-group"><label>Short Description</label><input type="text" id="pin-desc" placeholder="One line about why you love it"/></div></div>
         <div class="form-row">
           <div class="form-group"><label>Amazon Link *</label><input type="url" id="pin-link" placeholder="https://amazon.com/dp/…"/></div>
-          <div class="form-group"><label>Product Image URL *</label><input type="url" id="pin-image" placeholder="Paste image URL" oninput="previewImg('pin-prev',this.value)"/></div>
+          <div class="form-group">
+            <label>Product Image URL *</label>
+            <input type="url" id="pin-image" placeholder="Paste URL or upload below" oninput="previewImg('pin-prev',this.value)"/>
+            <div class="upload-row">
+              <label class="upload-label">
+                <input type="file" accept="image/*" onchange="uploadImage(this,'pin-prev')" style="display:none"/>
+                <button class="upload-btn" onclick="this.previousElementSibling.click();return false">Upload from device</button>
+              </label>
+            </div>
+          </div>
         </div>
         <div class="form-group" style="margin-bottom:18px">
           <label>Image Preview</label>
@@ -250,7 +265,16 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
         </div>
         <div class="form-row single"><div class="form-group"><label>Short Description</label><input type="text" id="grp-desc" placeholder="What's this collection about?"/></div></div>
         <div class="form-row">
-          <div class="form-group"><label>Cover Image URL *</label><input type="url" id="grp-cover" placeholder="Main image for this collection" oninput="previewImg('grp-prev',this.value)"/></div>
+          <div class="form-group">
+            <label>Cover Image URL *</label>
+            <input type="url" id="grp-cover" placeholder="Paste URL or upload below" oninput="previewImg('grp-prev',this.value)"/>
+            <div class="upload-row">
+              <label class="upload-label">
+                <input type="file" accept="image/*" onchange="uploadImage(this,'grp-prev')" style="display:none"/>
+                <button class="upload-btn" onclick="this.previousElementSibling.click();return false">Upload from device</button>
+              </label>
+            </div>
+          </div>
           <div class="form-group"><label>Cover Preview</label><div class="img-preview-wrap" style="height:100px"><img id="grp-prev" src="" style="display:none"/><div class="no-img" id="grp-prev-placeholder">Preview here</div></div></div>
         </div>
 
@@ -296,7 +320,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
         <div class="form-row">
           <div class="form-group"><label>Post Title *</label><input type="text" id="post-title" placeholder="e.g. Top 15 Things to Do in Bangalore"/></div>
           <div class="form-group"><label>Tag</label>
-            <select id="post-tag"><option value="">Choose…</option><option value="Travel Essentials">✈️ Travel Essentials</option><option value="Skincare">🧴 Skincare</option><option value="Home Decor Finds">🏡 Home Decor Finds</option><option value="Modest Fashion">👗 Modest Fashion</option><option value="Life">✦ Life</option></select>
+            <select id="post-tag"><option value="">Choose…</option><option value="Travel">✈️ Travel</option><option value="Skincare">🧴 Skincare</option><option value="Home">🏡 Home</option><option value="Fashion">👗 Fashion</option><option value="Life">✦ Life</option></select>
           </div>
         </div>
         <div class="form-row">
@@ -343,8 +367,12 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 
 <script>
 // ── ⚙️ SUPABASE CONFIG — paste your values here ──
-const SUPABASE_URL = 'https://zcyqynlpkzdzilmohnxh.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjeXF5bmxwa3pkemlsbW9obnhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2MDEyODMsImV4cCI6MjA4OTE3NzI4M30.kd568wumwGBsoKEkC0cE1op-uYqIrUAiLh2dKml8Wjg';
+const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+
+// ── ⚙️ CLOUDINARY CONFIG — paste your values here ──
+const CLOUDINARY_CLOUD = 'YOUR_CLOUD_NAME';
+const CLOUDINARY_PRESET = 'YOUR_UPLOAD_PRESET';
 
 // ── AUTH STATE ──
 let SESSION_TOKEN = null;
@@ -406,7 +434,7 @@ window.addEventListener('DOMContentLoaded', () => {
 // Writes use the user's session token — Supabase RLS blocks writes without it
 async function sbFetch(path, opts={}) {
   const isWrite = opts.method === 'POST' || opts.method === 'DELETE' || opts.method === 'PATCH';
-  const authToken = SESSION_TOKEN || SUPABASE_ANON_KEY;
+  const authToken = isWrite && SESSION_TOKEN ? SESSION_TOKEN : SUPABASE_ANON_KEY;
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
     headers: {
       'apikey': SUPABASE_ANON_KEY,
@@ -425,9 +453,11 @@ async function sbFetch(path, opts={}) {
 const db = {
   getPins:     ()  => sbFetch('pins?order=created_at.desc'),
   insertPin:   (p) => sbFetch('pins',   { method:'POST', body:JSON.stringify(p) }),
+  updatePin:   (id,p) => sbFetch(`pins?id=eq.${id}`, { method:'PATCH', prefer:'return=minimal', body:JSON.stringify(p) }),
   deletePin:   (id)=> sbFetch(`pins?id=eq.${id}`, { method:'DELETE', prefer:'return=minimal' }),
   getGroups:   ()  => sbFetch('groups?order=created_at.desc'),
   insertGroup: (g) => sbFetch('groups', { method:'POST', body:JSON.stringify(g) }),
+  updateGroup: (id,g) => sbFetch(`groups?id=eq.${id}`, { method:'PATCH', prefer:'return=minimal', body:JSON.stringify(g) }),
   deleteGroup: (id)=> sbFetch(`groups?id=eq.${id}`, { method:'DELETE', prefer:'return=minimal' }),
   getPosts:    ()  => sbFetch('posts?order=created_at.desc'),
   insertPost:  (p) => sbFetch('posts',  { method:'POST', body:JSON.stringify(p) }),
@@ -445,6 +475,22 @@ function goPage(key){
   document.querySelectorAll('.nav-item,.bnav-btn').forEach(n=>n.classList.remove('active'));
   document.getElementById('page-'+key).classList.add('active');
   document.querySelectorAll('[data-page="'+key+'"]').forEach(el=>el.classList.add('active'));
+  // reset edit mode if navigating to add forms directly (not via editPin/editGroup)
+  if(key==='add-pin' && !_fromEdit){
+    editingPinId=null;
+    ['pin-title','pin-category','pin-desc','pin-link','pin-image'].forEach(i=>document.getElementById(i).value='');
+    previewImg('pin-prev','');
+    document.querySelector('#page-add-pin .sec-header h2').textContent='Add an Individual Find';
+    document.querySelector('#page-add-pin .sec-header p').textContent='A single Amazon product you want to share.';
+    document.querySelector('#page-add-pin .btn-primary').textContent='Save Find ✦';
+  }
+  if(key==='add-group' && !_fromEdit){
+    editingGroupId=null;
+    document.querySelector('#page-add-group .sec-header h2').textContent='Add a Curated Collection';
+    document.querySelector('#page-add-group .sec-header p').textContent='For posts like "5 must-haves" — one card grouping multiple products.';
+    document.querySelector('#page-add-group .btn-primary').textContent='Save Collection ✦';
+  }
+  _fromEdit=false;
   if(key==='dashboard') renderDashboard();
   if(key==='all-pins')  renderAllPins();
   if(key==='all-groups')renderAllGroups();
@@ -452,6 +498,7 @@ function goPage(key){
   if(key==='add-group') initItemRows();
   window.scrollTo(0,0);
 }
+let _fromEdit=false;
 document.querySelectorAll('.nav-item,.bnav-btn').forEach(btn=>{
   btn.addEventListener('click', ()=>goPage(btn.dataset.page));
 });
@@ -515,23 +562,55 @@ function renderClicksTable(clicks){
   </div>`;
 }
 
-// ── SAVE PIN ──
+// ── SAVE / UPDATE PIN ──
+let editingPinId = null;
+
+function editPin(p){
+  // p is a JSON-stringified pin object passed from the list row
+  const pin = typeof p === 'string' ? JSON.parse(p) : p;
+  editingPinId = pin.id;
+  _fromEdit=true;
+  goPage('add-pin');
+  document.getElementById('pin-title').value    = pin.title||'';
+  document.getElementById('pin-category').value = pin.category||'';
+  document.getElementById('pin-desc').value      = pin.description||'';
+  document.getElementById('pin-link').value      = pin.link||'';
+  document.getElementById('pin-image').value     = pin.image||'';
+  previewImg('pin-prev', pin.image||'');
+  // swap header + button text
+  document.querySelector('#page-add-pin .sec-header h2').textContent = 'Edit Find';
+  document.querySelector('#page-add-pin .sec-header p').textContent  = 'Update the details below and save.';
+  document.querySelector('#page-add-pin .btn-primary').textContent   = 'Update Find ✦';
+  window.scrollTo(0,0);
+}
+
 async function savePin(){
-  const title=document.getElementById('pin-title').value.trim();
-  const category=document.getElementById('pin-category').value;
-  const description=document.getElementById('pin-desc').value.trim();
-  const link=document.getElementById('pin-link').value.trim();
-  const image=document.getElementById('pin-image').value.trim();
+  const title       = document.getElementById('pin-title').value.trim();
+  const category    = document.getElementById('pin-category').value;
+  const description = document.getElementById('pin-desc').value.trim();
+  const link        = document.getElementById('pin-link').value.trim();
+  const image       = document.getElementById('pin-image').value.trim();
   if(!title||!category||!link||!image){ toast('⚠️ Please fill in all required fields'); return; }
-  const btn=document.querySelector('#page-add-pin .btn-primary');
+  const btn = document.querySelector('#page-add-pin .btn-primary');
   btn.textContent='Saving…'; btn.disabled=true;
   try{
-    await db.insertPin({title,category,description,link,image});
+    if(editingPinId){
+      await db.updatePin(editingPinId, {title,category,description,link,image});
+      toast('✦ Find updated!');
+    } else {
+      await db.insertPin({title,category,description,link,image});
+      toast('✦ Find saved! Copy its link from "All Finds"');
+    }
+    editingPinId = null;
     ['pin-title','pin-category','pin-desc','pin-link','pin-image'].forEach(i=>document.getElementById(i).value='');
     previewImg('pin-prev','');
-    toast('✦ Find saved! Copy its link from "All Finds"');
+    // restore header
+    document.querySelector('#page-add-pin .sec-header h2').textContent = 'Add an Individual Find';
+    document.querySelector('#page-add-pin .sec-header p').textContent  = 'A single Amazon product you want to share.';
+    document.querySelector('#page-add-pin .btn-primary').textContent   = 'Save Find ✦';
   } catch(e){ toast('Error: '+e.message, 5000); }
-  btn.textContent='Save Find ✦'; btn.disabled=false;
+  btn.textContent = editingPinId ? 'Update Find ✦' : 'Save Find ✦';
+  btn.disabled=false;
 }
 
 // ── ITEMS BUILDER ──
@@ -631,14 +710,79 @@ function addItemRow(){
   document.getElementById('items-list').appendChild(row);
 }
 
-// ── SAVE GROUP ──
+// ── CLOUDINARY IMAGE UPLOAD ──
+async function uploadImage(inputEl, previewId){
+  const file = inputEl.files[0];
+  if(!file) return;
+  if(!CLOUDINARY_CLOUD||CLOUDINARY_CLOUD==='YOUR_CLOUD_NAME'){
+    toast('⚠️ Add your Cloudinary config first'); return;
+  }
+  const btn = inputEl.closest('.upload-row').querySelector('.upload-btn');
+  btn.textContent='Uploading…'; btn.disabled=true;
+  try{
+    const fd = new FormData();
+    fd.append('file', file);
+    fd.append('upload_preset', CLOUDINARY_PRESET);
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, {
+      method:'POST', body:fd
+    });
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error?.message||'Upload failed');
+    const urlEl = inputEl.closest('.upload-row').querySelector('input[type=url]');
+    urlEl.value = data.secure_url;
+    previewImg(previewId, data.secure_url);
+    toast('✦ Image uploaded!');
+  } catch(e){ toast('Upload error: '+e.message, 5000); }
+  btn.textContent='Upload image'; btn.disabled=false;
+  inputEl.value='';
+}
+
+// ── SAVE / UPDATE GROUP ──
+let editingGroupId = null;
+
+function editGroup(g){
+  const grp = typeof g === 'string' ? JSON.parse(g) : g;
+  editingGroupId = grp.id;
+  _fromEdit=true;
+  goPage('add-group');
+  document.getElementById('grp-title').value    = grp.title||'';
+  document.getElementById('grp-category').value = grp.category||'';
+  document.getElementById('grp-desc').value      = grp.description||'';
+  document.getElementById('grp-cover').value     = grp.cover_image||'';
+  previewImg('grp-prev', grp.cover_image||'');
+  // rebuild items list from existing items
+  itemCount=0; selectedPinIds=new Set();
+  document.getElementById('items-list').innerHTML='';
+  const picker=document.getElementById('pin-picker');
+  if(picker) picker.style.display='none';
+  (grp.items||[]).forEach(it=>{
+    itemCount++;const n=itemCount;
+    const row=document.createElement('div');row.className='item-row';row.id='item-row-'+n;
+    row.innerHTML=`<div class="item-row-top">
+      <span class="item-num">${n}</span>
+      <input type="text" value="${(it.title||'').replace(/"/g,'&quot;')}" id="item-title-${n}" style="flex:1"/>
+      <button class="remove-item" onclick="document.getElementById('item-row-${n}').remove()">✕</button>
+    </div>
+    <div class="item-row-fields">
+      <input type="url" value="${(it.link||'').replace(/"/g,'&quot;')}" id="item-link-${n}"/>
+      <input type="url" value="${(it.image||'').replace(/"/g,'&quot;')}" id="item-img-${n}"/>
+    </div>`;
+    document.getElementById('items-list').appendChild(row);
+  });
+  loadPickerPins();
+  // swap header + button
+  document.querySelector('#page-add-group .sec-header h2').textContent = 'Edit Collection';
+  document.querySelector('#page-add-group .sec-header p').textContent  = 'Update the details below and save.';
+  document.querySelector('#page-add-group .btn-primary').textContent   = 'Update Collection ✦';
+  window.scrollTo(0,0);
+}
+
 async function saveGroup(){
-  const title=document.getElementById('grp-title').value.trim();
-  const category=document.getElementById('grp-category').value;
-  const description=document.getElementById('grp-desc').value.trim();
-  const cover_image=document.getElementById('grp-cover').value.trim();
+  const title       = document.getElementById('grp-title').value.trim();
+  const category    = document.getElementById('grp-category').value;
+  const description = document.getElementById('grp-desc').value.trim();
+  const cover_image = document.getElementById('grp-cover').value.trim();
   if(!title||!category||!cover_image){ toast('⚠️ Please fill title, category and cover image'); return; }
-  // collect items by finding all title/link/img input pairs directly
   const items=[];
   document.querySelectorAll('#items-list .item-row').forEach(row=>{
     const tEl=row.querySelector('input[type=text]');
@@ -652,12 +796,23 @@ async function saveGroup(){
   const btn=document.querySelector('#page-add-group .btn-primary');
   btn.textContent='Saving…'; btn.disabled=true;
   try{
-    await db.insertGroup({title,category,description,cover_image,items});
+    if(editingGroupId){
+      await db.updateGroup(editingGroupId, {title,category,description,cover_image,items});
+      toast('✦ Collection updated!');
+    } else {
+      await db.insertGroup({title,category,description,cover_image,items});
+      toast('✦ Collection saved!');
+    }
+    editingGroupId = null;
     ['grp-title','grp-category','grp-desc','grp-cover'].forEach(i=>document.getElementById(i).value='');
     previewImg('grp-prev',''); initItemRows();
-    toast('✦ Collection saved!');
+    // restore header
+    document.querySelector('#page-add-group .sec-header h2').textContent = 'Add a Curated Collection';
+    document.querySelector('#page-add-group .sec-header p').textContent  = 'For posts like "5 must-haves" — one card grouping multiple products.';
+    document.querySelector('#page-add-group .btn-primary').textContent   = 'Save Collection ✦';
   } catch(e){ toast('Error: '+e.message, 5000); }
-  btn.textContent='Save Collection ✦'; btn.disabled=false;
+  btn.textContent = editingGroupId ? 'Update Collection ✦' : 'Save Collection ✦';
+  btn.disabled=false;
 }
 
 // ── ALL FINDS ──
@@ -679,6 +834,7 @@ async function renderAllPins(){
         <div class="ei-actions">
           <button class="btn btn-outline btn-sm" onclick="copyText('${SITE_URL}#pin-${p.id}')">Copy Link</button>
           <a href="index.html#pin-${p.id}" target="_blank"><button class="btn btn-outline btn-sm">Preview</button></a>
+          <button class="btn btn-outline btn-sm" onclick='editPin(${JSON.stringify(JSON.stringify(p))})'>Edit</button>
           <button class="btn btn-danger btn-sm" onclick="delPin('${p.id}')">Delete</button>
         </div>
       </div>`).join('');
@@ -701,6 +857,7 @@ async function renderAllGroups(){
         <div class="ei-actions">
           <button class="btn btn-outline btn-sm" onclick="copyText('${SITE_URL}#group-${g.id}')">Copy Link</button>
           <a href="index.html#group-${g.id}" target="_blank"><button class="btn btn-outline btn-sm">Preview</button></a>
+          <button class="btn btn-outline btn-sm" onclick='editGroup(${JSON.stringify(JSON.stringify(g))})'>Edit</button>
           <button class="btn btn-danger btn-sm" onclick="delGroup('${g.id}')">Delete</button>
         </div>
       </div>`).join('');
