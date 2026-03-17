@@ -4,287 +4,999 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Admin — Sahar's Finds</title>
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Jost',sans-serif;background:#111;color:#eee;min-height:100vh;overflow:hidden}
-
-@keyframes flicker{0%,100%{opacity:1}92%{opacity:1}93%{opacity:.85}94%{opacity:1}97%{opacity:.9}98%{opacity:1}}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-@keyframes glitch{
-  0%,100%{text-shadow:2px 0 #ff003c,-2px 0 #00fff9}
-  20%{text-shadow:-2px 0 #ff003c,2px 0 #00fff9;transform:translateX(2px)}
-  40%{text-shadow:2px 0 #ff003c,-2px 0 #00fff9;transform:translateX(-2px)}
-  60%{text-shadow:0 0 8px #ff003c;transform:translateX(0)}
+:root{
+  --rose:#fce8ed;--rose2:#f0c4ce;--rose3:#c97a8a;--rose4:#a05060;
+  --sage:#e8ede6;--sand:#f7f2eb;--lav:#eeeaf8;
+  --cream:#fffaf6;--white:#fff;--text:#2e2020;--muted:#9a7878;--light:#fdf5f0;
+  --danger:#c05050;--amz:#ff9900;
 }
-@keyframes scanline{0%{top:-10%}100%{top:110%}}
-@keyframes pulse-red{0%,100%{box-shadow:0 0 0 0 rgba(255,0,60,.4)}50%{box-shadow:0 0 0 10px rgba(255,0,60,0)}}
-@keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);min-height:100vh}
 
-/* blurred admin behind */
-#admin-blur{filter:blur(6px) brightness(.3);pointer-events:none;user-select:none;position:fixed;inset:0;overflow:hidden}
-.fake-topbar{background:#fff;height:56px;border-bottom:1px solid #f0c4ce;display:flex;align-items:center;padding:0 20px;gap:10px}
-.fake-content{padding:40px 28px;background:#fffaf6;height:calc(100vh - 56px)}
-.fake-card{background:#fff;border:1px solid #f0c4ce;border-radius:14px;padding:20px;margin-bottom:16px;height:60px}
+/* ── LOGIN SCREEN ── */
+#login-screen{position:fixed;inset:0;background:linear-gradient(145deg,#fce4ec 0%,#f8eaf2 40%,#ece6f8 80%,#e6f0e4 100%);display:flex;align-items:center;justify-content:center;z-index:999;padding:20px}
+.login-card{background:#fff;border-radius:24px;border:1px solid var(--rose2);padding:40px 32px;width:100%;max-width:380px;text-align:center;box-shadow:0 24px 64px rgba(180,100,120,.14)}
+.login-logo{font-family:'Playfair Display',serif;font-size:24px;font-weight:400;margin-bottom:4px}
+.login-logo em{font-style:italic;color:var(--rose3)}
+.login-sub{font-size:13px;color:var(--muted);margin-bottom:32px}
+.login-fields{display:flex;flex-direction:column;gap:14px;text-align:left;margin-bottom:16px}
+.login-fields label{font-size:11.5px;font-weight:500;color:var(--muted);display:block;margin-bottom:4px}
+.login-fields input{padding:11px 14px;border:1px solid var(--rose2);border-radius:10px;font-family:'Jost',sans-serif;font-size:14px;color:var(--text);background:var(--light);outline:none;transition:border-color .2s;width:100%;-webkit-appearance:none}
+.login-fields input:focus{border-color:var(--rose3)}
+.login-btn{width:100%;padding:13px;border-radius:100px;border:none;background:var(--rose3);color:#fff;font-family:'Jost',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:background .2s}
+.login-btn:hover,.login-btn:active{background:var(--rose4)}
+.login-btn:disabled{opacity:.6;cursor:not-allowed}
+.login-error{font-size:12.5px;color:var(--danger);background:#fde8e8;border:1px solid #f0c0c0;border-radius:8px;padding:8px 12px;margin-top:12px;display:none;text-align:left}
 
-/* overlay */
-#ransom-overlay{
-  position:fixed;inset:0;z-index:99999;
-  background:rgba(5,5,5,.92);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Share Tech Mono',monospace;
-  padding:12px;
+/* ── ADMIN UI ── */
+#admin-ui{display:none}
+.topbar{background:var(--white);border-bottom:1px solid var(--rose2);padding:0 16px;display:flex;align-items:center;gap:10px;height:56px;position:sticky;top:0;z-index:100}
+.topbar-logo{font-family:'Playfair Display',serif;font-size:17px;color:var(--text);margin-right:auto}
+.topbar-logo em{font-style:normal;font-size:11px;font-family:'Jost',sans-serif;color:var(--rose3);background:var(--rose);border-radius:100px;padding:2px 10px;margin-left:7px;vertical-align:middle}
+.btn{padding:8px 18px;border-radius:100px;border:none;font-family:'Jost',sans-serif;font-size:13px;cursor:pointer;transition:all .2s;font-weight:500;-webkit-tap-highlight-color:transparent}
+.btn-primary{background:var(--rose3);color:#fff}.btn-primary:hover,.btn-primary:active{background:var(--rose4)}
+.btn-primary:disabled{opacity:.6;cursor:not-allowed}
+.btn-outline{background:transparent;border:1px solid var(--rose2);color:var(--muted)}.btn-outline:hover,.btn-outline:active{background:var(--rose);color:var(--text)}
+.btn-sm{padding:6px 13px;font-size:12px}
+.btn-danger{background:#fde8e8;color:var(--danger);border:1px solid #f0c0c0}.btn-danger:hover,.btn-danger:active{background:#fcd0d0}
+.btn-logout{background:transparent;border:1px solid var(--rose2);color:var(--muted);padding:6px 14px;border-radius:100px;font-family:'Jost',sans-serif;font-size:12px;cursor:pointer;transition:all .18s}
+.btn-logout:hover{background:var(--rose);color:var(--text)}
+.layout{display:flex;min-height:calc(100vh - 56px)}
+.sidebar{background:var(--white);border-right:1px solid var(--rose2);padding:24px 16px;display:flex;flex-direction:column;gap:4px;width:210px;flex-shrink:0}
+.sidebar-label{font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);padding:12px 10px 5px;font-weight:500}
+.nav-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:10px;cursor:pointer;font-size:13.5px;color:var(--muted);transition:all .15s;border:none;background:none;width:100%;text-align:left;-webkit-tap-highlight-color:transparent}
+.nav-item:hover,.nav-item:active{background:var(--rose);color:var(--text)}
+.nav-item.active{background:var(--rose);color:var(--rose4);font-weight:500}
+.ni-icon{font-size:15px;width:20px;text-align:center}
+.content{flex:1;padding:28px 20px 100px;max-width:860px;min-width:0}
+.page{display:none}.page.active{display:block}
+.sec-header{margin-bottom:22px}
+.sec-header h2{font-family:'Playfair Display',serif;font-size:clamp(20px,5vw,24px);font-weight:400;margin-bottom:4px}
+.sec-header p{font-size:13px;color:var(--muted)}
+.card{background:var(--white);border-radius:14px;border:1px solid var(--rose2);padding:20px;margin-bottom:16px}
+.card-title{font-family:'Playfair Display',serif;font-size:16px;margin-bottom:14px;display:flex;align-items:center;gap:7px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:12px}
+.form-row.single{grid-template-columns:1fr}
+.form-group{display:flex;flex-direction:column;gap:5px}
+label{font-size:12px;font-weight:500;color:var(--muted)}
+input[type=text],input[type=url],select,textarea{padding:10px 13px;border:1px solid var(--rose2);border-radius:10px;font-family:'Jost',sans-serif;font-size:14px;color:var(--text);background:var(--light);outline:none;transition:border-color .2s;width:100%;-webkit-appearance:none}
+input:focus,select:focus,textarea:focus{border-color:var(--rose3)}
+textarea{resize:vertical;min-height:64px}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239a7878' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-color:var(--light)}
+.img-preview-wrap{width:100%;height:130px;border-radius:10px;overflow:hidden;background:var(--rose);border:1px solid var(--rose2)}
+.img-preview-wrap img{width:100%;height:100%;object-fit:cover}
+.no-img{display:flex;align-items:center;justify-content:center;height:100%;font-size:12px;color:var(--muted)}
+.items-builder{border:1px solid var(--rose2);border-radius:10px;overflow:hidden;margin-bottom:10px}
+.items-header{display:grid;grid-template-columns:28px 1fr 36px;gap:8px;padding:6px 12px;background:var(--rose);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--rose3);font-weight:500}
+.item-row{padding:10px 12px;border-bottom:1px solid var(--rose2);background:var(--light);display:flex;flex-direction:column;gap:7px}
+.item-row:last-child{border-bottom:none}
+.item-row-top{display:flex;align-items:center;gap:8px}
+.item-num{font-size:11px;color:var(--muted);font-weight:500;width:20px;text-align:center;flex-shrink:0}
+.item-row input{background:var(--white);border-radius:7px;padding:7px 10px;font-size:13px}
+.remove-item{background:none;border:none;cursor:pointer;color:var(--muted);font-size:18px;padding:2px 4px;border-radius:6px;line-height:1;flex-shrink:0}
+.remove-item:hover,.remove-item:active{color:var(--danger)}
+.item-row-fields{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.add-item-btn{background:none;border:1.5px dashed var(--rose2);color:var(--rose3);border-radius:8px;padding:9px;font-size:13px;cursor:pointer;width:100%;font-family:'Jost',sans-serif;transition:background .15s}
+.add-item-btn:hover,.add-item-btn:active{background:var(--rose)}
+.existing-list{display:flex;flex-direction:column;gap:9px;margin-bottom:20px}
+.existing-item{display:flex;align-items:center;gap:12px;background:var(--white);border:1px solid var(--rose2);border-radius:12px;padding:10px 14px;flex-wrap:wrap}
+.ei-img{width:46px;height:46px;border-radius:9px;object-fit:cover;background:var(--rose);flex-shrink:0}
+.ei-info{flex:1;min-width:160px}
+.ei-info strong{font-size:13.5px;font-weight:500;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ei-link{font-size:10px!important;color:var(--rose3)!important;font-family:monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;max-width:240px}
+.ei-cat{font-size:9.5px;letter-spacing:.8px;text-transform:uppercase;color:var(--rose3);background:var(--rose);border-radius:100px;padding:2px 8px;font-weight:500;flex-shrink:0;white-space:nowrap}
+.ei-actions{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap}
+.stats-row{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:24px}
+@media(min-width:500px){.stats-row{grid-template-columns:repeat(4,1fr)}}
+.stat-card{background:var(--white);border:1px solid var(--rose2);border-radius:12px;padding:16px;text-align:center}
+.stat-num{font-family:'Playfair Display',serif;font-size:28px;color:var(--rose4);margin-bottom:3px}
+.stat-label{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.info-box{display:flex;align-items:flex-start;gap:8px;padding:12px 14px;border-radius:10px;font-size:12.5px;line-height:1.6;margin-bottom:16px}
+.info-box.amber{background:#fff8e6;color:#a07020;border:1px solid #f5d99a}
+.info-box.green{background:#edf5eb;color:#4a7a44;border:1px solid #b8d9b4}
+/* BLOCK BUILDER */
+.block-add-row{display:flex;gap:7px;flex-wrap:wrap}
+.block-add-btn{background:none;border:1px dashed var(--rose2);color:var(--rose3);border-radius:8px;padding:7px 12px;font-size:12px;cursor:pointer;font-family:'Jost',sans-serif;transition:background .15s}
+.block-add-btn:hover,.block-add-btn:active{background:var(--rose)}
+.block-item{background:var(--light);border:1px solid var(--rose2);border-radius:10px;padding:10px 12px;display:flex;gap:8px;align-items:flex-start}
+.block-label{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--rose3);font-weight:500;min-width:52px;margin-top:11px;flex-shrink:0}
+.block-item textarea,.block-item input[type=text]{background:var(--white);border-radius:8px;padding:8px 10px;font-size:13px;resize:vertical;flex:1}
+.block-item textarea{min-height:80px}
+.block-remove{background:none;border:none;cursor:pointer;color:var(--muted);font-size:18px;padding:4px;line-height:1;flex-shrink:0;margin-top:4px}
+.block-remove:hover{color:var(--danger)}
+.numbered-block-items{flex:1;display:flex;flex-direction:column;gap:6px}
+.numbered-block-item{display:grid;grid-template-columns:1fr 1fr 28px;gap:6px;align-items:start}
+.numbered-block-item input{font-size:12.5px;padding:6px 9px}
+.add-numbered-item{background:none;border:1px dashed var(--rose2);color:var(--rose3);border-radius:6px;padding:5px 10px;font-size:11.5px;cursor:pointer;font-family:'Jost',sans-serif;margin-top:4px;width:100%}
+.add-numbered-item:hover{background:var(--rose)}
+.rni-remove{background:none;border:none;cursor:pointer;color:var(--muted);font-size:15px;padding:2px;margin-top:4px}
+.rni-remove:hover{color:var(--danger)}
+/* PICKER CARDS */
+.picker-card{border:2px solid var(--rose2);border-radius:10px;overflow:hidden;cursor:pointer;transition:all .15s;background:#fff;-webkit-tap-highlight-color:transparent}
+.picker-card:hover{border-color:var(--rose3)}
+.picker-card.selected{border-color:var(--rose3);background:var(--rose)}
+.picker-card img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+.picker-card-name{font-size:11px;padding:5px 6px;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.picker-card .tick{display:none;position:absolute;top:4px;right:4px;background:var(--rose3);color:#fff;border-radius:50%;width:18px;height:18px;font-size:11px;align-items:center;justify-content:center}
+.picker-card.selected .tick{display:flex}
+.picker-card{position:relative}
+/* UPLOAD BUTTON */
+.upload-row{margin-top:6px}
+.upload-btn{background:var(--lav);border:1px solid #d4caf0;color:#6050a0;border-radius:8px;padding:6px 14px;font-size:12px;cursor:pointer;font-family:'Jost',sans-serif;transition:background .15s;font-weight:500}
+.upload-btn:hover,.upload-btn:active{background:#d4caf0}
+.upload-btn:disabled{opacity:.6;cursor:not-allowed}
+/* LOADING INLINE */
+.loading-inline{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;padding:20px 0}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* TOAST */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--text);color:#fff;padding:11px 22px;border-radius:100px;font-size:13px;opacity:0;transition:all .3s;pointer-events:none;z-index:1000;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* MOBILE BOTTOM NAV */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--rose2);z-index:100;padding:8px 0 max(8px,env(safe-area-inset-bottom))}
+.bottom-nav-inner{display:flex;justify-content:space-around}
+.bnav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:4px 10px;color:var(--muted);font-family:'Jost',sans-serif;font-size:10px;-webkit-tap-highlight-color:transparent;min-width:50px}
+.bnav-btn.active{color:var(--rose3)}
+.bni{font-size:20px}
+@media(max-width:640px){
+  .sidebar{display:none}.bottom-nav{display:block}
+  .content{padding:20px 14px 90px}
+  .form-row{grid-template-columns:1fr}
+  .item-row-fields{grid-template-columns:1fr}
+  .ei-cat{display:none}
+  .numbered-block-item{grid-template-columns:1fr 28px}
 }
-#ransom-overlay::before{
-  content:'';position:fixed;inset:0;
-  background:repeating-linear-gradient(0deg,rgba(0,0,0,.15) 0px,rgba(0,0,0,.15) 1px,transparent 1px,transparent 2px);
-  pointer-events:none;z-index:1;
-}
-.scanline-sweep{
-  position:fixed;left:0;right:0;height:3px;
-  background:linear-gradient(transparent,rgba(255,0,60,.15),transparent);
-  animation:scanline 4s linear infinite;
-  pointer-events:none;z-index:2;
-}
-
-.ransom-box{
-  position:relative;z-index:3;
-  background:#0f0f0f;
-  border:1px solid #ff003c;
-  border-radius:4px;
-  width:100%;max-width:600px;
-  padding:22px 24px 18px;
-  animation:flicker 8s infinite, fadein .6s ease;
-  box-shadow:0 0 50px rgba(255,0,60,.2),inset 0 0 30px rgba(255,0,60,.03);
-}
-
-/* header row */
-.ransom-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-.skull{font-size:36px;cursor:pointer;animation:glitch 3s infinite;flex-shrink:0}
-.head-text{}
-.ransom-title{
-  font-size:clamp(15px,3.5vw,20px);
-  color:#ff003c;
-  text-transform:uppercase;
-  letter-spacing:2px;
-  animation:glitch 4s infinite;
-  text-shadow:0 0 16px rgba(255,0,60,.6);
-  line-height:1.2;
-}
-.ransom-sub{font-size:10px;color:#444;letter-spacing:2px;text-transform:uppercase;margin-top:3px}
-
-.divider{height:1px;background:linear-gradient(90deg,transparent,#ff003c44,#ff003c,#ff003c44,transparent);margin:12px 0}
-
-/* two-column layout */
-.ransom-cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:12px}
-@media(max-width:480px){.ransom-cols{grid-template-columns:1fr}}
-
-.col-left{}
-.ransom-body{font-size:11.5px;line-height:1.75;color:#aaa;margin-bottom:10px}
-.ransom-body .hi{color:#ff003c;font-weight:700}
-
-.files-box{
-  background:#080808;border:1px solid #1a1a1a;border-radius:3px;
-  padding:8px 10px;font-size:10.5px;color:#555;
-  max-height:88px;overflow-y:auto;
-}
-.files-box div{padding:1px 0;border-bottom:1px solid #111}
-.files-box div::before{content:'🔒 ';font-size:9px}
-
-.col-right{}
-.counter-wrap{text-align:center;margin-bottom:10px}
-.counter-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#444;margin-bottom:4px}
-.counter{
-  font-size:clamp(28px,6vw,38px);
-  color:#ff003c;
-  text-shadow:0 0 24px rgba(255,0,60,.8);
-  letter-spacing:3px;
-}
-.counter-sub{font-size:9px;color:#333;margin-top:3px}
-
-.payment-box{
-  background:#0c0c0c;border:1px solid #222;border-radius:4px;
-  padding:10px 12px;
-}
-.payment-title{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#666;margin-bottom:8px}
-.payment-amount{font-size:clamp(18px,4vw,24px);color:#00ff9d;text-shadow:0 0 16px rgba(0,255,157,.5);margin-bottom:2px}
-.payment-amount span{font-size:11px;color:#444}
-.upi-label{font-size:9px;color:#333;letter-spacing:1px;margin:8px 0 5px;text-transform:uppercase}
-.upi-id{
-  background:#111;border:1px solid #ff003c44;border-radius:3px;
-  padding:7px 10px;font-size:12px;color:#ff9d00;
-  letter-spacing:1px;display:flex;align-items:center;justify-content:space-between;
-  cursor:pointer;transition:background .15s;
-  animation:pulse-red 2.5s infinite;
-}
-.upi-id:hover{background:#1a0a00}
-.copy-hint{font-size:8px;color:#333;text-transform:uppercase;letter-spacing:1px}
-
-/* bottom row */
-.ransom-bottom{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
-@media(max-width:480px){.ransom-bottom{grid-template-columns:1fr}}
-
-.warning-strip{
-  background:#1a0000;border:1px solid #ff003c22;border-radius:3px;
-  padding:7px 10px;font-size:10px;color:#ff5050;line-height:1.6;
-}
-.warning-strip::before{content:'⚠ ';color:#ff003c}
-
-.btn-paid{
-  padding:10px 16px;border-radius:3px;white-space:nowrap;
-  border:1px solid #ff003c;background:#0f0f0f;
-  color:#ff003c;font-family:'Share Tech Mono',monospace;font-size:11px;
-  letter-spacing:1px;text-transform:uppercase;cursor:pointer;
-  transition:all .2s;
-}
-.btn-paid:hover{background:#1a0000;box-shadow:0 0 16px rgba(255,0,60,.3)}
-
-.footer-note{text-align:center;font-size:9px;color:#282828;margin-top:10px;letter-spacing:1px}
-.blink{animation:blink 1s step-end infinite;color:#ff003c}
 </style>
 </head>
 <body>
 
-<div id="admin-blur">
-  <div class="fake-topbar">
-    <div style="font-size:17px;font-family:serif">sahar's finds ✦</div>
-    <div style="background:#fce8ed;border-radius:100px;padding:2px 12px;font-size:11px;color:#c97a8a">Admin</div>
-  </div>
-  <div class="fake-content">
-    <div style="font-size:22px;font-family:serif;margin-bottom:20px">Welcome back ✦</div>
-    <div class="fake-card"></div>
-    <div class="fake-card"></div>
-    <div class="fake-card" style="height:120px"></div>
+<!-- ── LOGIN SCREEN ── -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">sahar's finds <em>✦</em></div>
+    <p class="login-sub">Admin Panel — sign in to continue</p>
+    <div class="login-fields">
+      <div>
+        <label>Email</label>
+        <input type="email" id="login-email" placeholder="your@email.com" autocomplete="email"/>
+      </div>
+      <div>
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password"/>
+      </div>
+    </div>
+    <button class="login-btn" id="login-btn" onclick="doLogin()">Sign In</button>
+    <div class="login-error" id="login-error"></div>
   </div>
 </div>
 
-<div id="ransom-overlay">
-  <div class="scanline-sweep"></div>
-  <div class="ransom-box">
+<!-- ── ADMIN UI (shown only after login) ── -->
+<div id="admin-ui">
 
-    <div class="ransom-head">
-      <div class="skull" title="...">💀</div>
-      <div class="head-text">
-        <div class="ransom-title">Ooops! Your Files Have Been Encrypted!</div>
-        <div class="ransom-sub">sahar's finds — critical system alert &nbsp;|&nbsp; ID: <span id="rand-id"></span></div>
+<div class="topbar">
+  <div class="topbar-logo">sahar's finds ✦ <em>Admin</em></div>
+  <a href="index.html" target="_blank"><button class="btn btn-outline btn-sm">View Site →</button></a>
+  <button class="btn-logout" onclick="doLogout()">Sign Out</button>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-label">Manage</div>
+    <button class="nav-item active" data-page="dashboard"><span class="ni-icon">✦</span> Dashboard</button>
+    <button class="nav-item" data-page="add-pin"><span class="ni-icon">📌</span> Add Individual Find</button>
+    <button class="nav-item" data-page="add-group"><span class="ni-icon">🗂️</span> Add Collection</button>
+    <div class="sidebar-label">View All</div>
+    <button class="nav-item" data-page="all-pins"><span class="ni-icon">🖼️</span> All Finds</button>
+    <button class="nav-item" data-page="all-groups"><span class="ni-icon">📚</span> All Collections</button>
+    <div class="sidebar-label">Blog</div>
+    <button class="nav-item" data-page="add-post"><span class="ni-icon">✍️</span> Write a Post</button>
+    <button class="nav-item" data-page="all-posts"><span class="ni-icon">📝</span> All Posts</button>
+  </aside>
+
+  <div class="content">
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="sec-header"><h2>Welcome back ✦</h2><p>Everything on your site, at a glance.</p></div>
+      <div class="stats-row" id="stats-row">
+        <div class="stat-card"><div class="stat-num">—</div><div class="stat-label">Individual Finds</div></div>
+        <div class="stat-card"><div class="stat-num">—</div><div class="stat-label">Collections</div></div>
+        <div class="stat-card"><div class="stat-num">—</div><div class="stat-label">Blog Posts</div></div>
+        <div class="stat-card"><div class="stat-num">—</div><div class="stat-label">Amazon Clicks</div></div>
+      </div>
+      <div class="info-box green"><span>🔒</span> You're signed in. Only you can add or delete content — your data is protected by Supabase Auth.</div>
+      <div class="card">
+        <div class="card-title">🚀 Quick Actions</div>
+        <div style="display:flex;gap:9px;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="goPage('add-pin')">+ Add a Find</button>
+          <button class="btn btn-outline" onclick="goPage('add-group')">+ Add a Collection</button>
+          <button class="btn btn-outline" onclick="goPage('add-post')">✍️ Write a Post</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">📊 Top Amazon Clicks</div>
+        <div id="clicks-table"><div class="loading-inline"><div class="spin"></div> Loading…</div></div>
       </div>
     </div>
 
-    <div class="divider"></div>
-
-    <div class="ransom-cols">
-      <div class="col-left">
-        <div class="ransom-body">
-          <span class="hi">What happened?</span><br/>
-          Your database, images, and admin credentials have been encrypted with AES-256. All product listings, collections and blog posts are now locked.<br/><br/>
-          <span class="hi">Affected files:</span>
-        </div>
-        <div class="files-box">
-          <div>pins_table_backup.db</div>
-          <div>groups_collection_data.json</div>
-          <div>blog_posts_archive.json</div>
-          <div>supabase_config.env</div>
-          <div>cloudinary_credentials.cfg</div>
-          <div>amazon_clicks_analytics.csv</div>
-          <div>admin_panel_access.key</div>
-          <div>product_links_export.csv</div>
-        </div>
-      </div>
-
-      <div class="col-right">
-        <div class="counter-wrap">
-          <div class="counter-label">⏳ Key deleted in</div>
-          <div class="counter" id="countdown">00:30:00</div>
-          <div class="counter-sub">After this, your data is gone forever.</div>
-        </div>
-        <div class="payment-box">
-          <div class="payment-title">💸 Ransom Required</div>
-          <div class="payment-amount">₹5.00 <span>INR</span></div>
-          <div style="font-size:9.5px;color:#444;margin-top:1px">Pay EXACTLY ₹5 — other amounts won't register</div>
-          <div class="upi-label">Send via UPI to:</div>
-          <div class="upi-id" onclick="copyUPI()">
-            <span>zuhaibf@ibl</span>
-            <span class="copy-hint">tap to copy</span>
+    <!-- ADD FIND -->
+    <div class="page" id="page-add-pin">
+      <div class="sec-header"><h2>Add an Individual Find</h2><p>A single Amazon product you want to share.</p></div>
+      <div class="card">
+        <div class="form-row">
+          <div class="form-group"><label>Product Name *</label><input type="text" id="pin-title" placeholder="e.g. Rattan Wall Mirror"/></div>
+          <div class="form-group"><label>Category *</label>
+            <select id="pin-category"><option value="">Choose…</option><option value="travel">✈️ Travel Essentials</option><option value="home">🏡 Home Decor Finds</option><option value="fashion">👗 Modest Fashion</option><option value="skincare">🧴 Skincare</option></select>
           </div>
         </div>
+        <div class="form-row single"><div class="form-group"><label>Short Description</label><input type="text" id="pin-desc" placeholder="One line about why you love it"/></div></div>
+        <div class="form-row">
+          <div class="form-group"><label>Amazon Link *</label><input type="url" id="pin-link" placeholder="https://amazon.com/dp/…"/></div>
+          <div class="form-group">
+            <label>Product Image URL *</label>
+            <input type="url" id="pin-image" placeholder="Paste URL or upload below" oninput="previewImg('pin-prev',this.value)"/>
+            <div class="upload-row">
+              <label class="upload-label">
+                <input type="file" accept="image/*" onchange="uploadImage(this,'pin-prev')" style="display:none"/>
+                <button class="upload-btn" onclick="this.previousElementSibling.click();return false">Upload from device</button>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:18px">
+          <label>Image Preview</label>
+          <div class="img-preview-wrap"><img id="pin-prev" src="" style="display:none"/><div class="no-img" id="pin-prev-placeholder">Paste an image URL above to preview</div></div>
+        </div>
+        <button class="btn btn-primary" onclick="savePin()">Save Find ✦</button>
+      </div>
+      <div class="info-box amber"><span>💡</span><div>To get an image from Amazon: open the product page → right-click the main photo → <strong>"Copy image address"</strong> → paste it above.</div></div>
+    </div>
+
+    <!-- ADD COLLECTION -->
+    <div class="page" id="page-add-group">
+      <div class="sec-header"><h2>Add a Curated Collection</h2><p>For posts like "5 must-haves" — one card grouping multiple products.</p></div>
+      <div class="card">
+        <div class="form-row">
+          <div class="form-group"><label>Collection Title *</label><input type="text" id="grp-title" placeholder="e.g. 5 Must-Have Home Decor Items Under Budget"/></div>
+          <div class="form-group"><label>Category *</label>
+            <select id="grp-category"><option value="">Choose…</option><option value="travel">✈️ Travel Essentials</option><option value="home">🏡 Home Decor Finds</option><option value="fashion">👗 Modest Fashion</option><option value="skincare">🧴 Skincare</option></select>
+          </div>
+        </div>
+        <div class="form-row single"><div class="form-group"><label>Short Description</label><input type="text" id="grp-desc" placeholder="What's this collection about?"/></div></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Cover Image URL *</label>
+            <input type="url" id="grp-cover" placeholder="Paste URL or upload below" oninput="previewImg('grp-prev',this.value)"/>
+            <div class="upload-row">
+              <label class="upload-label">
+                <input type="file" accept="image/*" onchange="uploadImage(this,'grp-prev')" style="display:none"/>
+                <button class="upload-btn" onclick="this.previousElementSibling.click();return false">Upload from device</button>
+              </label>
+            </div>
+          </div>
+          <div class="form-group"><label>Cover Preview</label><div class="img-preview-wrap" style="height:100px"><img id="grp-prev" src="" style="display:none"/><div class="no-img" id="grp-prev-placeholder">Preview here</div></div></div>
+        </div>
+
+        <!-- PICK FROM EXISTING FINDS -->
+        <div style="margin-bottom:8px;margin-top:4px">
+          <label>Products in this Collection *</label>
+          <p style="font-size:11.5px;color:var(--muted);margin-top:3px">Pick from your saved finds, or add new ones manually below.</p>
+        </div>
+        <div id="pin-picker-wrap" style="margin-bottom:12px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <button class="block-add-btn" style="flex-shrink:0" onclick="togglePinPicker()">🖼️ Pick from existing finds</button>
+            <span style="font-size:11px;color:var(--rose3)" id="picker-selected-count"></span>
+          </div>
+          <div id="pin-picker" style="display:none">
+            <input type="text" id="picker-search" placeholder="Search your finds…" oninput="filterPicker(this.value)" style="margin-bottom:10px;font-size:13px;padding:8px 12px"/>
+            <div id="picker-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;max-height:280px;overflow-y:auto;padding:2px"></div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:6px"><label style="font-size:11px;color:var(--muted)">Or add products manually:</label></div>
+        <div class="items-builder"><div class="items-header"><span>#</span><span>Product details</span><span></span></div><div id="items-list"></div></div>
+        <button class="add-item-btn" onclick="addItemRow()">+ Add another product</button>
+        <div style="margin-top:18px"><button class="btn btn-primary" onclick="saveGroup()">Save Collection ✦</button></div>
       </div>
     </div>
 
-    <div class="divider"></div>
-
-    <div class="ransom-bottom">
-      <div class="warning-strip">
-        Do NOT restart your server, contact hosting support, or attempt to restore from backup — this will trigger permanent deletion of all encrypted data.
-      </div>
-      <button class="btn-paid" onclick="checkPayment()">
-        <span class="blink">█</span> I Paid — Verify <span class="blink">█</span>
-      </button>
+    <!-- ALL FINDS -->
+    <div class="page" id="page-all-pins">
+      <div class="sec-header"><h2>All Individual Finds</h2><p>Copy a link to paste on Pinterest, or delete.</p></div>
+      <div id="all-pins-list" class="existing-list"></div>
     </div>
 
-    <div class="footer-note">RANSOMWARE v4.2.1 &nbsp;|&nbsp; EncryptorBot &nbsp;|&nbsp; Do not close this window</div>
+    <!-- ALL COLLECTIONS -->
+    <div class="page" id="page-all-groups">
+      <div class="sec-header"><h2>All Collections</h2><p>Your curated multi-product groups.</p></div>
+      <div id="all-groups-list" class="existing-list"></div>
+    </div>
+
+    <!-- WRITE POST -->
+    <div class="page" id="page-add-post">
+      <div class="sec-header"><h2>Write a Blog Post</h2><p>Share a travel guide, review, or tip list.</p></div>
+      <div class="card">
+        <div class="form-row">
+          <div class="form-group"><label>Post Title *</label><input type="text" id="post-title" placeholder="e.g. Top 15 Things to Do in Bangalore"/></div>
+          <div class="form-group"><label>Tag</label>
+            <select id="post-tag"><option value="">Choose…</option><option value="Travel">✈️ Travel</option><option value="Skincare">🧴 Skincare</option><option value="Home">🏡 Home</option><option value="Fashion">👗 Fashion</option><option value="Life">✦ Life</option></select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Date</label><input type="text" id="post-date" placeholder="e.g. March 2025"/></div>
+          <div class="form-group"><label>Read Time</label><input type="text" id="post-readtime" placeholder="e.g. 6 min read"/></div>
+        </div>
+        <div class="form-row single"><div class="form-group"><label>Cover Image URL *</label><input type="url" id="post-cover" placeholder="https://…" oninput="previewImg('post-prev',this.value)"/></div></div>
+        <div class="form-group" style="margin-bottom:14px"><div class="img-preview-wrap" style="height:110px"><img id="post-prev" src="" style="display:none"/><div class="no-img" id="post-prev-placeholder">Cover image preview</div></div></div>
+        <div class="form-row single"><div class="form-group"><label>Short Excerpt *</label><input type="text" id="post-excerpt" placeholder="One or two sentences teasing the post"/></div></div>
+        <div style="margin:18px 0 10px"><label>Post Body *</label><p style="font-size:11.5px;color:var(--muted);margin-top:3px;margin-bottom:10px">Build your post block by block.</p></div>
+        <div id="blocks-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px"></div>
+        <div class="block-add-row">
+          <button class="block-add-btn" onclick="addBlock('p')">+ Paragraph</button>
+          <button class="block-add-btn" onclick="addBlock('h2')">+ Heading</button>
+          <button class="block-add-btn" onclick="addBlock('blockquote')">+ Quote</button>
+          <button class="block-add-btn" onclick="addBlock('ul')">+ Bullet List</button>
+          <button class="block-add-btn" onclick="addBlock('numbered')">+ Numbered List</button>
+        </div>
+        <div style="margin-top:20px"><button class="btn btn-primary" onclick="savePost()">Publish Post ✦</button></div>
+      </div>
+    </div>
+
+    <!-- ALL POSTS -->
+    <div class="page" id="page-all-posts">
+      <div class="sec-header"><h2>All Blog Posts</h2><p>Manage your published posts.</p></div>
+      <div id="all-posts-list" class="existing-list"></div>
+    </div>
   </div>
 </div>
 
+<nav class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <button class="bnav-btn active" data-page="dashboard"><span class="bni">✦</span>Home</button>
+    <button class="bnav-btn" data-page="add-pin"><span class="bni">📌</span>Find</button>
+    <button class="bnav-btn" data-page="add-group"><span class="bni">🗂️</span>Collection</button>
+    <button class="bnav-btn" data-page="add-post"><span class="bni">✍️</span>Blog</button>
+    <button class="bnav-btn" data-page="all-posts"><span class="bni">📝</span>Posts</button>
+  </div>
+</nav>
+
+</div><!-- /admin-ui -->
+
+<div class="toast" id="toast"></div>
+
 <script>
-const RANSOMWARE_PRANK = true;
-if(!RANSOMWARE_PRANK){
-  document.getElementById('ransom-overlay').style.display='none';
-  document.getElementById('admin-blur').style.display='none';
-}
+// ── ⚙️ SUPABASE CONFIG — paste your values here ──
+const SUPABASE_URL = 'https://zcyqynlpkzdzilmohnxh.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjeXF5bmxwa3pkemlsbW9obnhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2MDEyODMsImV4cCI6MjA4OTE3NzI4M30.kd568wumwGBsoKEkC0cE1op-uYqIrUAiLh2dKml8Wjg';
 
-document.getElementById('rand-id').textContent = Math.random().toString(36).substr(2,8).toUpperCase();
+// ── ⚙️ CLOUDINARY CONFIG — paste your values here ──
+const CLOUDINARY_CLOUD = 'dtfpoctjk';
+const CLOUDINARY_PRESET = 'myfinds';
 
-// 30 min countdown
-let total = 30*60;
-const cd = document.getElementById('countdown');
-const tick = setInterval(()=>{
-  if(total<=0){cd.textContent='00:00:00';clearInterval(tick);return;}
-  total--;
-  const m=String(Math.floor(total/60)).padStart(2,'0');
-  const s=String(total%60).padStart(2,'0');
-  cd.textContent=`00:${m}:${s}`;
-},1000);
+// ── AUTH STATE ──
+let SESSION_TOKEN = null;
 
-function copyUPI(){
-  navigator.clipboard.writeText('zuhaibf@ibl').then(()=>{
-    const el=document.querySelector('.upi-id span:first-child');
-    const orig=el.textContent;
-    el.textContent='✓ Copied!'; el.style.color='#00ff9d';
-    setTimeout(()=>{el.textContent=orig;el.style.color='';},2000);
-  });
-}
-
-let clickCount=0;
-function checkPayment(){
-  const btn=document.querySelector('.btn-paid');
-  if(btn.disabled) return;
-  clickCount++;
-  btn.textContent='⏳ Verifying…'; btn.disabled=true;
-  setTimeout(()=>{
-    btn.innerHTML='✗ Payment not found. Try again.';
-    btn.style.color='#ff6060'; btn.disabled=false;
-    setTimeout(()=>{
-      btn.innerHTML='<span class="blink">█</span> I Paid — Verify <span class="blink">█</span>';
-      btn.style.color=''; clickCount=0;
-    },3000);
-  },3500);
-}
-
-// secret: triple-click skull to dismiss
-let sc=0,st;
-document.querySelector('.skull').addEventListener('click',()=>{
-  sc++; clearTimeout(st);
-  if(sc>=3){
-    const o=document.getElementById('ransom-overlay');
-    o.style.transition='opacity .5s'; o.style.opacity='0';
-    setTimeout(()=>{
-      o.style.display='none';
-      document.getElementById('admin-blur').style.display='none';
-    },500);
-    sc=0;
+// ── LOGIN / LOGOUT ──
+async function doLogin(){
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  const errEl = document.getElementById('login-error');
+  const btn = document.getElementById('login-btn');
+  errEl.style.display = 'none';
+  if(!email || !password){ errEl.textContent='Please enter your email and password.'; errEl.style.display='block'; return; }
+  btn.textContent = 'Signing in…'; btn.disabled = true;
+  try {
+    const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
+      method: 'POST',
+      headers: { 'apikey': SUPABASE_ANON_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error_description || data.msg || 'Login failed. Check your email and password.');
+    SESSION_TOKEN = data.access_token;
+    sessionStorage.setItem('sb_token', SESSION_TOKEN);
+    sessionStorage.setItem('sb_refresh', data.refresh_token);
+    showAdminUI();
+    scheduleTokenRefresh();
+  } catch(e) {
+    errEl.textContent = e.message;
+    errEl.style.display = 'block';
   }
-  st=setTimeout(()=>sc=0,600);
+  btn.textContent = 'Sign In'; btn.disabled = false;
+}
+
+function scheduleTokenRefresh(){
+  // refresh every 50 minutes (token lasts 60)
+  setInterval(async ()=>{
+    const refresh = sessionStorage.getItem('sb_refresh');
+    if(!refresh) return;
+    try{
+      const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`,{
+        method:'POST',
+        headers:{'apikey':SUPABASE_ANON_KEY,'Content-Type':'application/json'},
+        body:JSON.stringify({refresh_token:refresh})
+      });
+      const data = await res.json();
+      if(data.access_token){
+        SESSION_TOKEN = data.access_token;
+        sessionStorage.setItem('sb_token', SESSION_TOKEN);
+        sessionStorage.setItem('sb_refresh', data.refresh_token);
+      }
+    }catch(e){ console.warn('Token refresh failed',e); }
+  }, 50*60*1000);
+}
+  
+function doLogout(){
+  SESSION_TOKEN = null;
+  sessionStorage.removeItem('sb_token');
+  document.getElementById('admin-ui').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('login-password').value = '';
+  document.getElementById('login-error').style.display = 'none';
+}
+
+function showAdminUI(){
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('admin-ui').style.display = 'block';
+  if(window.innerWidth <= 640) document.querySelector('.bottom-nav').style.display = 'block';
+  renderDashboard();
+  initItemRows();
+}
+
+// Restore session on page load
+window.addEventListener('DOMContentLoaded', async () => {
+  document.getElementById('login-password').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+  document.getElementById('login-email').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+const saved = sessionStorage.getItem('sb_token');
+const savedRefresh = sessionStorage.getItem('sb_refresh');
+if(saved && savedRefresh){
+  // immediately refresh before showing UI — don't trust the saved token age
+  try{
+    const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`,{
+      method:'POST',
+      headers:{'apikey':SUPABASE_ANON_KEY,'Content-Type':'application/json'},
+      body:JSON.stringify({refresh_token:savedRefresh})
+    });
+    const data = await res.json();
+    if(data.access_token){
+      SESSION_TOKEN = data.access_token;
+      sessionStorage.setItem('sb_token', SESSION_TOKEN);
+      sessionStorage.setItem('sb_refresh', data.refresh_token);
+    } else {
+      SESSION_TOKEN = saved; // fallback to saved if refresh fails
+    }
+  }catch(e){ SESSION_TOKEN = saved; }
+  showAdminUI();
+  scheduleTokenRefresh();
+} else if(saved){
+  SESSION_TOKEN = saved;
+  showAdminUI();
+  scheduleTokenRefresh();
+}
 });
+
+// ── DB LAYER ──
+// Reads use the anon key (public data is fine to read)
+// Writes use the user's session token — Supabase RLS blocks writes without it
+async function sbFetch(path, opts={}) {
+  const isWrite = opts.method === 'POST' || opts.method === 'DELETE' || opts.method === 'PATCH';
+  const authToken = isWrite && SESSION_TOKEN ? SESSION_TOKEN : SUPABASE_ANON_KEY;
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+    headers: {
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${authToken}`,
+      'Content-Type': 'application/json',
+      'Prefer': opts.prefer || 'return=representation',
+      ...(opts.headers||{})
+    },
+    method: opts.method || 'GET',
+    body: opts.body || undefined
+  });
+  if(!res.ok){ const e = await res.text(); throw new Error(e); }
+  const t = await res.text(); return t ? JSON.parse(t) : null;
+}
+
+const db = {
+  getPins:     ()  => sbFetch('pins?order=created_at.desc'),
+  insertPin:   (p) => sbFetch('pins',   { method:'POST', body:JSON.stringify(p) }),
+  updatePin:   (id,p) => sbFetch(`pins?id=eq.${id}`, { method:'PATCH', prefer:'return=minimal', body:JSON.stringify(p) }),
+  deletePin:   (id)=> sbFetch(`pins?id=eq.${id}`, { method:'DELETE', prefer:'return=minimal' }),
+  getGroups:   ()  => sbFetch('groups?order=created_at.desc'),
+  insertGroup: (g) => sbFetch('groups', { method:'POST', body:JSON.stringify(g) }),
+  updateGroup: (id,g) => sbFetch(`groups?id=eq.${id}`, { method:'PATCH', prefer:'return=minimal', body:JSON.stringify(g) }),
+  deleteGroup: (id)=> sbFetch(`groups?id=eq.${id}`, { method:'DELETE', prefer:'return=minimal' }),
+  getPosts:    ()  => sbFetch('posts?order=created_at.desc'),
+  insertPost:  (p) => sbFetch('posts',  { method:'POST', body:JSON.stringify(p) }),
+  deletePost:  (id)=> sbFetch(`posts?id=eq.${id}`, { method:'DELETE', prefer:'return=minimal' }),
+  getClicks:   ()  => sbFetch('clicks?order=clicked_at.desc'),
+  countAll: async () => {
+    const [pins,groups,posts] = await Promise.all([db.getPins(), db.getGroups(), db.getPosts()]);
+    return { pins, groups, posts };
+  }
+};
+
+// ── NAV ──
+function goPage(key){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item,.bnav-btn').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+key).classList.add('active');
+  document.querySelectorAll('[data-page="'+key+'"]').forEach(el=>el.classList.add('active'));
+  // reset edit mode if navigating to add forms directly (not via editPin/editGroup)
+  if(key==='add-pin' && !_fromEdit){
+    editingPinId=null;
+    ['pin-title','pin-category','pin-desc','pin-link','pin-image'].forEach(i=>document.getElementById(i).value='');
+    previewImg('pin-prev','');
+    document.querySelector('#page-add-pin .sec-header h2').textContent='Add an Individual Find';
+    document.querySelector('#page-add-pin .sec-header p').textContent='A single Amazon product you want to share.';
+    document.querySelector('#page-add-pin .btn-primary').textContent='Save Find ✦';
+  }
+  if(key==='add-group' && !_fromEdit){
+    editingGroupId=null;
+    document.querySelector('#page-add-group .sec-header h2').textContent='Add a Curated Collection';
+    document.querySelector('#page-add-group .sec-header p').textContent='For posts like "5 must-haves" — one card grouping multiple products.';
+    document.querySelector('#page-add-group .btn-primary').textContent='Save Collection ✦';
+  }
+  _fromEdit=false;
+  if(key==='dashboard') renderDashboard();
+  if(key==='all-pins')  renderAllPins();
+  if(key==='all-groups')renderAllGroups();
+  if(key==='all-posts') renderAllPosts();
+  if(key==='add-group') initItemRows();
+  window.scrollTo(0,0);
+}
+let _fromEdit=false;
+document.querySelectorAll('.nav-item,.bnav-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>goPage(btn.dataset.page));
+});
+
+// ── TOAST ──
+function toast(msg, dur=2800){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), dur);
+}
+
+function escapeAttr(str){
+  return str.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// ── IMAGE PREVIEW ──
+function previewImg(id, url){
+  const img=document.getElementById(id); const ph=document.getElementById(id+'-placeholder');
+  if(url){ img.src=url; img.style.display='block'; if(ph) ph.style.display='none'; }
+  else { img.style.display='none'; if(ph) ph.style.display='flex'; }
+}
+
+// ── DASHBOARD ──
+async function renderDashboard(){
+  try{
+    const {pins,groups,posts} = await db.countAll();
+    // load clicks separately — don't block stats if it fails
+    let clicks=[];
+    try{ clicks = await db.getClicks() || []; }catch(e){}
+    document.getElementById('stats-row').innerHTML=`
+      <div class="stat-card"><div class="stat-num">${(pins||[]).length}</div><div class="stat-label">Individual Finds</div></div>
+      <div class="stat-card"><div class="stat-num">${(groups||[]).length}</div><div class="stat-label">Collections</div></div>
+      <div class="stat-card"><div class="stat-num">${(posts||[]).length}</div><div class="stat-label">Blog Posts</div></div>
+      <div class="stat-card"><div class="stat-num">${clicks.length}</div><div class="stat-label">Amazon Clicks</div></div>`;
+    renderClicksTable(clicks);
+  } catch(e){ console.error(e); }
+}
+
+function renderClicksTable(clicks){
+  const el = document.getElementById('clicks-table');
+  if(!clicks||!clicks.length){
+    el.innerHTML='<p style="font-size:13px;color:var(--muted);padding:4px 0">No clicks tracked yet — they appear here once visitors tap "Shop on Amazon".</p>';
+    return;
+  }
+  // tally by pin_title
+  const tally={};
+  clicks.forEach(c=>{
+    const k=c.pin_title||c.pin_id||'Unknown';
+    tally[k]=(tally[k]||0)+1;
+  });
+  const sorted=Object.entries(tally).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const max=sorted[0][1];
+  el.innerHTML=`<div style="display:flex;flex-direction:column;gap:8px">
+    ${sorted.map(([title,count],i)=>`
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:11px;color:var(--muted);min-width:16px;text-align:right">${i+1}</span>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${title}</div>
+          <div style="height:5px;background:var(--rose2);border-radius:100px;margin-top:4px">
+            <div style="height:5px;background:var(--rose3);border-radius:100px;width:${Math.round(count/max*100)}%"></div>
+          </div>
+        </div>
+        <span style="font-size:13px;font-weight:500;color:var(--rose3);min-width:28px;text-align:right">${count}</span>
+      </div>`).join('')}
+  </div>`;
+}
+
+// ── SAVE / UPDATE PIN ──
+let editingPinId = null;
+
+function editPin(p){
+  // p is a JSON-stringified pin object passed from the list row
+  const pin = typeof p === 'string' ? JSON.parse(p) : p;
+  editingPinId = pin.id;
+  _fromEdit=true;
+  goPage('add-pin');
+  document.getElementById('pin-title').value    = pin.title||'';
+  document.getElementById('pin-category').value = pin.category||'';
+  document.getElementById('pin-desc').value      = pin.description||'';
+  document.getElementById('pin-link').value      = pin.link||'';
+  document.getElementById('pin-image').value     = pin.image||'';
+  previewImg('pin-prev', pin.image||'');
+  // swap header + button text
+  document.querySelector('#page-add-pin .sec-header h2').textContent = 'Edit Find';
+  document.querySelector('#page-add-pin .sec-header p').textContent  = 'Update the details below and save.';
+  document.querySelector('#page-add-pin .btn-primary').textContent   = 'Update Find ✦';
+  window.scrollTo(0,0);
+}
+
+async function savePin(){
+  const title       = document.getElementById('pin-title').value.trim();
+  const category    = document.getElementById('pin-category').value;
+  const description = document.getElementById('pin-desc').value.trim();
+  const link        = document.getElementById('pin-link').value.trim();
+  const image       = document.getElementById('pin-image').value.trim();
+  if(!title||!category||!link||!image){ toast('⚠️ Please fill in all required fields'); return; }
+  const btn = document.querySelector('#page-add-pin .btn-primary');
+  btn.textContent='Saving…'; btn.disabled=true;
+  try{
+    if(editingPinId){
+      await db.updatePin(editingPinId, {title,category,description,link,image});
+      toast('✦ Find updated!');
+    } else {
+      await db.insertPin({title,category,description,link,image});
+      toast('✦ Find saved! Copy its link from "All Finds"');
+    }
+    editingPinId = null;
+    ['pin-title','pin-category','pin-desc','pin-link','pin-image'].forEach(i=>document.getElementById(i).value='');
+    previewImg('pin-prev','');
+    // restore header
+    document.querySelector('#page-add-pin .sec-header h2').textContent = 'Add an Individual Find';
+    document.querySelector('#page-add-pin .sec-header p').textContent  = 'A single Amazon product you want to share.';
+    document.querySelector('#page-add-pin .btn-primary').textContent   = 'Save Find ✦';
+  } catch(e){ toast('Error: '+e.message, 5000); }
+  btn.textContent = editingPinId ? 'Update Find ✦' : 'Save Find ✦';
+  btn.disabled=false;
+}
+
+// ── ITEMS BUILDER ──
+let itemCount=0;
+let CACHED_PINS=[];
+let selectedPinIds=new Set();
+
+function initItemRows(){
+  itemCount=0;
+  selectedPinIds=new Set();
+  document.getElementById('items-list').innerHTML='';
+  // hide picker on reset
+  const picker=document.getElementById('pin-picker');
+  if(picker) picker.style.display='none';
+  const cnt=document.getElementById('picker-selected-count');
+  if(cnt) cnt.textContent='';
+  addItemRow();addItemRow();addItemRow();
+  // load pins in background for picker
+  loadPickerPins();
+}
+
+async function loadPickerPins(){
+  try{
+    CACHED_PINS = await db.getPins() || [];
+    renderPickerGrid(CACHED_PINS);
+  }catch(e){}
+}
+
+function togglePinPicker(){
+  const picker=document.getElementById('pin-picker');
+  picker.style.display = picker.style.display==='none' ? 'block' : 'none';
+}
+
+function filterPicker(q){
+  const filtered = q ? CACHED_PINS.filter(p=>p.title.toLowerCase().includes(q.toLowerCase())) : CACHED_PINS;
+  renderPickerGrid(filtered);
+}
+
+function renderPickerGrid(pins){
+  const grid=document.getElementById('picker-grid');
+  if(!grid) return;
+  if(!pins||!pins.length){grid.innerHTML='<p style="font-size:12px;color:var(--muted);grid-column:1/-1">No finds saved yet.</p>';return;}
+  grid.innerHTML=pins.map(p=>`
+    <div class="picker-card ${selectedPinIds.has(p.id)?'selected':''}" onclick="togglePickerPin('${p.id}','${p.title.replace(/'/g,"\\'")}','${(p.link||'').replace(/'/g,"\\'")}','${(p.image||'').replace(/'/g,"\\'")}')">
+      <div class="tick">✓</div>
+      <img src="${p.image}" alt="${p.title}" loading="lazy" onerror="this.style.opacity='.3'"/>
+      <div class="picker-card-name">${p.title}</div>
+    </div>`).join('');
+}
+
+function togglePickerPin(id, title, link, image){
+  if(selectedPinIds.has(id)){
+    selectedPinIds.delete(id);
+    // remove the auto-added item row for this pin
+    const existing=document.getElementById('picker-row-'+id);
+    if(existing) existing.remove();
+  } else {
+    selectedPinIds.add(id);
+    // inject a filled item row
+    addItemRowPrefilled(id, title, link, image);
+  }
+  // re-render grid to update tick marks
+  const q=(document.getElementById('picker-search')||{}).value||'';
+  filterPicker(q);
+  // update count label
+  const cnt=document.getElementById('picker-selected-count');
+  if(cnt) cnt.textContent = selectedPinIds.size ? `${selectedPinIds.size} selected` : '';
+}
+
+function addItemRowPrefilled(pinId, title, link, image){
+  itemCount++;const n=itemCount;
+  const row=document.createElement('div');row.className='item-row';row.id='item-row-'+n;
+  row.dataset.pickerId=pinId; // mark so we can find it if deselected
+  row.innerHTML=`<div class="item-row-top">
+    <span class="item-num">${n}</span>
+    <input type="text" value="${title.replace(/"/g,'&quot;')}" id="item-title-${n}" style="flex:1"/>
+    <button class="remove-item" onclick="document.getElementById('item-row-${n}').remove();selectedPinIds.delete('${pinId}');filterPicker((document.getElementById('picker-search')||{}).value||'');updatePickerCount()">✕</button>
+  </div>
+  <div class="item-row-fields">
+    <input type="url" value="${link.replace(/"/g,'&quot;')}" id="item-link-${n}"/>
+    <input type="url" value="${image.replace(/"/g,'&quot;')}" id="item-img-${n}"/>
+  </div>`;
+  // give the row a ref so deselect can remove it
+  row.id = 'picker-row-'+pinId; // override id so we can find it
+  document.getElementById('items-list').appendChild(row);
+}
+
+function updatePickerCount(){
+  const cnt=document.getElementById('picker-selected-count');
+  if(cnt) cnt.textContent=selectedPinIds.size?`${selectedPinIds.size} selected`:'';
+}
+function addItemRow(){
+  itemCount++; const n=itemCount;
+  const row=document.createElement('div'); row.className='item-row'; row.id='item-row-'+n;
+  row.innerHTML=`<div class="item-row-top"><span class="item-num">${n}</span><input type="text" placeholder="Product title" id="item-title-${n}" style="flex:1"/><button class="remove-item" onclick="document.getElementById('item-row-${n}').remove()">✕</button></div>
+    <div class="item-row-fields"><input type="url" placeholder="Amazon link" id="item-link-${n}"/><input type="url" placeholder="Product image URL" id="item-img-${n}"/></div>`;
+  document.getElementById('items-list').appendChild(row);
+}
+
+// ── CLOUDINARY IMAGE UPLOAD ──
+async function uploadImage(inputEl, previewId){
+  const file = inputEl.files[0];
+  if(!file) return;
+  if(!CLOUDINARY_CLOUD||CLOUDINARY_CLOUD==='YOUR_CLOUD_NAME'){
+    toast('⚠️ Add your Cloudinary config first'); return;
+  }
+  const btn = inputEl.closest('.upload-row').querySelector('.upload-btn');
+  btn.textContent='Uploading…'; btn.disabled=true;
+  try{
+    const fd = new FormData();
+    fd.append('file', file);
+    fd.append('upload_preset', CLOUDINARY_PRESET);
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, {
+      method:'POST', body:fd
+    });
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error?.message||'Upload failed');
+    const urlEl = inputEl.closest('.form-group').querySelector('input[type=url]');
+    urlEl.value = data.secure_url;
+    previewImg(previewId, data.secure_url);
+    toast('✦ Image uploaded!');
+  } catch(e){ toast('Upload error: '+e.message, 5000); }
+  btn.textContent='Upload image'; btn.disabled=false;
+  inputEl.value='';
+}
+
+// ── SAVE / UPDATE GROUP ──
+let editingGroupId = null;
+
+function editGroup(g){
+  const grp = typeof g === 'string' ? JSON.parse(g) : g;
+  editingGroupId = grp.id;
+  _fromEdit=true;
+  goPage('add-group');
+  document.getElementById('grp-title').value    = grp.title||'';
+  document.getElementById('grp-category').value = grp.category||'';
+  document.getElementById('grp-desc').value      = grp.description||'';
+  document.getElementById('grp-cover').value     = grp.cover_image||'';
+  previewImg('grp-prev', grp.cover_image||'');
+  // rebuild items list from existing items
+  itemCount=0; selectedPinIds=new Set();
+  document.getElementById('items-list').innerHTML='';
+  const picker=document.getElementById('pin-picker');
+  if(picker) picker.style.display='none';
+  (grp.items||[]).forEach(it=>{
+    itemCount++;const n=itemCount;
+    const row=document.createElement('div');row.className='item-row';row.id='item-row-'+n;
+    row.innerHTML=`<div class="item-row-top">
+      <span class="item-num">${n}</span>
+      <input type="text" value="${(it.title||'').replace(/"/g,'&quot;')}" id="item-title-${n}" style="flex:1"/>
+      <button class="remove-item" onclick="document.getElementById('item-row-${n}').remove()">✕</button>
+    </div>
+    <div class="item-row-fields">
+      <input type="url" value="${(it.link||'').replace(/"/g,'&quot;')}" id="item-link-${n}"/>
+      <input type="url" value="${(it.image||'').replace(/"/g,'&quot;')}" id="item-img-${n}"/>
+    </div>`;
+    document.getElementById('items-list').appendChild(row);
+  });
+  loadPickerPins();
+  // swap header + button
+  document.querySelector('#page-add-group .sec-header h2').textContent = 'Edit Collection';
+  document.querySelector('#page-add-group .sec-header p').textContent  = 'Update the details below and save.';
+  document.querySelector('#page-add-group .btn-primary').textContent   = 'Update Collection ✦';
+  window.scrollTo(0,0);
+}
+
+async function saveGroup(){
+  const title       = document.getElementById('grp-title').value.trim();
+  const category    = document.getElementById('grp-category').value;
+  const description = document.getElementById('grp-desc').value.trim();
+  const cover_image = document.getElementById('grp-cover').value.trim();
+  if(!title||!category||!cover_image){ toast('⚠️ Please fill title, category and cover image'); return; }
+  const items=[];
+  document.querySelectorAll('#items-list .item-row').forEach(row=>{
+    const tEl=row.querySelector('input[type=text]');
+    const inputs=row.querySelectorAll('input[type=url]');
+    const t=(tEl||{}).value||'';
+    const l=(inputs[0]||{}).value||'';
+    const img=(inputs[1]||{}).value||'';
+    if(t.trim()&&l.trim()) items.push({title:t.trim(),link:l.trim(),image:img.trim()});
+  });
+  if(!items.length){ toast('⚠️ Add at least one product'); return; }
+  const btn=document.querySelector('#page-add-group .btn-primary');
+  btn.textContent='Saving…'; btn.disabled=true;
+  try{
+    if(editingGroupId){
+      await db.updateGroup(editingGroupId, {title,category,description,cover_image,items});
+      toast('✦ Collection updated!');
+    } else {
+      await db.insertGroup({title,category,description,cover_image,items});
+      toast('✦ Collection saved!');
+    }
+    editingGroupId = null;
+    ['grp-title','grp-category','grp-desc','grp-cover'].forEach(i=>document.getElementById(i).value='');
+    previewImg('grp-prev',''); initItemRows();
+    // restore header
+    document.querySelector('#page-add-group .sec-header h2').textContent = 'Add a Curated Collection';
+    document.querySelector('#page-add-group .sec-header p').textContent  = 'For posts like "5 must-haves" — one card grouping multiple products.';
+    document.querySelector('#page-add-group .btn-primary').textContent   = 'Save Collection ✦';
+  } catch(e){ toast('Error: '+e.message, 5000); }
+  btn.textContent = editingGroupId ? 'Update Collection ✦' : 'Save Collection ✦';
+  btn.disabled=false;
+}
+
+// ── ALL FINDS ──
+const CEMOJI={travel:'✈️',home:'🏡',fashion:'👗',skincare:'🧴'};
+const SITE_URL=window.location.href.replace('admin.html','index.html');
+const BLOG_URL=window.location.href.replace('admin.html','blog.html');
+
+async function renderAllPins(){
+  const el=document.getElementById('all-pins-list');
+  el.innerHTML=`<div class="loading-inline"><div class="spin"></div> Loading…</div>`;
+  try{
+    const pins=await db.getPins();
+    if(!pins||!pins.length){ el.innerHTML='<p style="color:var(--muted);font-size:13px;padding:8px 0">No finds yet.</p>'; return; }
+    el.innerHTML=pins.map(p=>`
+      <div class="existing-item">
+        <img class="ei-img" src="${p.image}" alt="" onerror="this.style.opacity='.3'"/>
+        <div class="ei-info"><strong>${p.title}</strong><span class="ei-link">${SITE_URL}#pin-${p.id}</span></div>
+        <span class="ei-cat">${CEMOJI[p.category]||''} ${p.category}</span>
+        <div class="ei-actions">
+          <button class="btn btn-outline btn-sm" onclick="copyText('${SITE_URL}#pin-${p.id}')">Copy Link</button>
+          <a href="index.html#pin-${p.id}" target="_blank"><button class="btn btn-outline btn-sm">Preview</button></a>
+          <button class="btn btn-outline btn-sm" onclick="editPin(this.dataset.p)" data-p="${escapeAttr(JSON.stringify(p))}">Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="delPin('${p.id}')">Delete</button>
+        </div>
+      </div>`).join('');
+  } catch(e){ el.innerHTML='<p style="color:var(--danger);font-size:13px">Error loading.</p>'; }
+}
+async function delPin(id){ if(!confirm('Delete this find?')) return; await db.deletePin(id); toast('Deleted.'); renderAllPins(); }
+
+// ── ALL GROUPS ──
+async function renderAllGroups(){
+  const el=document.getElementById('all-groups-list');
+  el.innerHTML=`<div class="loading-inline"><div class="spin"></div> Loading…</div>`;
+  try{
+    const groups=await db.getGroups();
+    if(!groups||!groups.length){ el.innerHTML='<p style="color:var(--muted);font-size:13px;padding:8px 0">No collections yet.</p>'; return; }
+    el.innerHTML=groups.map(g=>`
+      <div class="existing-item">
+        <img class="ei-img" src="${g.cover_image}" alt="" onerror="this.style.opacity='.3'"/>
+        <div class="ei-info"><strong>${g.title}</strong><span class="ei-link">${SITE_URL}#group-${g.id}</span></div>
+        <span class="ei-cat">${CEMOJI[g.category]||''} ${g.category}</span>
+        <div class="ei-actions">
+          <button class="btn btn-outline btn-sm" onclick="copyText('${SITE_URL}#group-${g.id}')">Copy Link</button>
+          <a href="index.html#group-${g.id}" target="_blank"><button class="btn btn-outline btn-sm">Preview</button></a>
+          <button class="btn btn-outline btn-sm" onclick="editGroup(this.dataset.g)" data-g="${escapeAttr(JSON.stringify(g))}">Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="delGroup('${g.id}')">Delete</button>
+        </div>
+      </div>`).join('');
+  } catch(e){ el.innerHTML='<p style="color:var(--danger);font-size:13px">Error loading.</p>'; }
+}
+async function delGroup(id){ if(!confirm('Delete this collection?')) return; await db.deleteGroup(id); toast('Deleted.'); renderAllGroups(); }
+
+// ── BLOG ──
+let blockCount=0;
+function addBlock(type){
+  blockCount++; const id='blk'+blockCount;
+  const el=document.createElement('div'); el.className='block-item'; el.id=id; el.dataset.type=type;
+  const labels={p:'Para',h2:'Heading',blockquote:'Quote',ul:'Bullets',numbered:'Numbered'};
+  let inner=`<span class="block-label">${labels[type]||type}</span>`;
+  if(['p','h2','blockquote'].includes(type)){
+    inner+=`<textarea placeholder="${type==='h2'?'Section heading…':type==='blockquote'?'Memorable quote…':'Write your paragraph…'}" class="blk-text"></textarea>`;
+  } else if(type==='ul'){
+    inner+=`<textarea placeholder="One item per line…" class="blk-text"></textarea>`;
+  } else if(type==='numbered'){
+    inner+=`<div class="numbered-block-items" id="nbi-${id}">
+      <div class="numbered-block-item"><input type="text" placeholder="Item title"/><input type="text" placeholder="Description"/><button class="rni-remove" onclick="this.closest('.numbered-block-item').remove()">✕</button></div>
+    </div>
+    <button class="add-numbered-item" onclick="addNumberedItem('nbi-${id}')">+ Add item</button>`;
+  }
+  inner+=`<button class="block-remove" onclick="document.getElementById('${id}').remove()">✕</button>`;
+  el.innerHTML=inner; document.getElementById('blocks-list').appendChild(el);
+}
+function addNumberedItem(cid){
+  const c=document.getElementById(cid); if(!c) return;
+  const row=document.createElement('div'); row.className='numbered-block-item';
+  row.innerHTML=`<input type="text" placeholder="Item title"/><input type="text" placeholder="Description"/><button class="rni-remove" onclick="this.closest('.numbered-block-item').remove()">✕</button>`;
+  c.appendChild(row);
+}
+function collectBlocks(){
+  const blocks=[];
+  document.querySelectorAll('#blocks-list .block-item').forEach(el=>{
+    const type=el.dataset.type;
+    if(['p','h2','blockquote'].includes(type)){ const t=(el.querySelector('.blk-text')||{}).value||''; if(t.trim()) blocks.push({type,text:t.trim()}); }
+    else if(type==='ul'){ const t=(el.querySelector('.blk-text')||{}).value||''; const items=t.split('\n').map(s=>s.trim()).filter(Boolean); if(items.length) blocks.push({type:'ul',items}); }
+    else if(type==='numbered'){
+      const items=[...el.querySelectorAll('.numbered-block-item')].map(r=>{ const ins=r.querySelectorAll('input'); return{title:(ins[0]||{}).value||'',body:(ins[1]||{}).value||''}; }).filter(i=>i.title.trim());
+      if(items.length) blocks.push({type:'numbered',items});
+    }
+  });
+  return blocks;
+}
+async function savePost(){
+  const title=document.getElementById('post-title').value.trim();
+  const tag=document.getElementById('post-tag').value;
+  const post_date=document.getElementById('post-date').value.trim();
+  const read_time=document.getElementById('post-readtime').value.trim();
+  const cover_image=document.getElementById('post-cover').value.trim();
+  const excerpt=document.getElementById('post-excerpt').value.trim();
+  if(!title||!cover_image||!excerpt){ toast('⚠️ Please fill in title, cover image and excerpt'); return; }
+  const content=collectBlocks();
+  if(!content.length){ toast('⚠️ Add at least one content block'); return; }
+  const btn=document.querySelector('#page-add-post .btn-primary');
+  btn.textContent='Publishing…'; btn.disabled=true;
+  try{
+    await db.insertPost({title,tag,post_date,read_time,cover_image,excerpt,content});
+    ['post-title','post-tag','post-date','post-readtime','post-cover','post-excerpt'].forEach(i=>document.getElementById(i).value='');
+    previewImg('post-prev',''); document.getElementById('blocks-list').innerHTML=''; blockCount=0;
+    toast('✦ Post published!');
+  } catch(e){ toast('Error: '+e.message, 5000); }
+  btn.textContent='Publish Post ✦'; btn.disabled=false;
+}
+async function renderAllPosts(){
+  const el=document.getElementById('all-posts-list');
+  el.innerHTML=`<div class="loading-inline"><div class="spin"></div> Loading…</div>`;
+  try{
+    const posts=await db.getPosts();
+    if(!posts||!posts.length){ el.innerHTML='<p style="color:var(--muted);font-size:13px;padding:8px 0">No posts yet.</p>'; return; }
+    el.innerHTML=posts.map(p=>`
+      <div class="existing-item">
+        <img class="ei-img" src="${p.cover_image}" alt="" style="height:46px;object-fit:cover" onerror="this.style.opacity='.3'"/>
+        <div class="ei-info"><strong>${p.title}</strong><span class="ei-link">${BLOG_URL}#post-${p.id}</span></div>
+        <span class="ei-cat">${p.tag||'—'}</span>
+        <div class="ei-actions">
+          <button class="btn btn-outline btn-sm" onclick="copyText('${BLOG_URL}#post-${p.id}')">Copy Link</button>
+          <a href="blog.html#post-${p.id}" target="_blank"><button class="btn btn-outline btn-sm">Preview</button></a>
+          <button class="btn btn-danger btn-sm" onclick="delPost('${p.id}')">Delete</button>
+        </div>
+      </div>`).join('');
+  } catch(e){ el.innerHTML='<p style="color:var(--danger);font-size:13px">Error loading.</p>'; }
+}
+async function delPost(id){ if(!confirm('Delete this post?')) return; await db.deletePost(id); toast('Deleted.'); renderAllPosts(); }
+
+function copyText(txt){ navigator.clipboard.writeText(txt).then(()=>toast('Link copied! Paste on Pinterest ✦')).catch(()=>prompt('Copy this link:',txt)); }
 </script>
 </body>
 </html>
