@@ -445,11 +445,35 @@ function showAdminUI(){
 }
 
 // Restore session on page load
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('login-password').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
   document.getElementById('login-email').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
-  const saved = sessionStorage.getItem('sb_token');
-  if(saved){ SESSION_TOKEN = saved; showAdminUI(); scheduleTokenRefresh(); }
+const saved = sessionStorage.getItem('sb_token');
+const savedRefresh = sessionStorage.getItem('sb_refresh');
+if(saved && savedRefresh){
+  // immediately refresh before showing UI — don't trust the saved token age
+  try{
+    const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`,{
+      method:'POST',
+      headers:{'apikey':SUPABASE_ANON_KEY,'Content-Type':'application/json'},
+      body:JSON.stringify({refresh_token:savedRefresh})
+    });
+    const data = await res.json();
+    if(data.access_token){
+      SESSION_TOKEN = data.access_token;
+      sessionStorage.setItem('sb_token', SESSION_TOKEN);
+      sessionStorage.setItem('sb_refresh', data.refresh_token);
+    } else {
+      SESSION_TOKEN = saved; // fallback to saved if refresh fails
+    }
+  }catch(e){ SESSION_TOKEN = saved; }
+  showAdminUI();
+  scheduleTokenRefresh();
+} else if(saved){
+  SESSION_TOKEN = saved;
+  showAdminUI();
+  scheduleTokenRefresh();
+}
 });
 
 // ── DB LAYER ──
