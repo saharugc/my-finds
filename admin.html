@@ -396,7 +396,9 @@ async function doLogin(){
     if(!res.ok) throw new Error(data.error_description || data.msg || 'Login failed. Check your email and password.');
     SESSION_TOKEN = data.access_token;
     sessionStorage.setItem('sb_token', SESSION_TOKEN);
+    sessionStorage.setItem('sb_refresh', data.refresh_token);
     showAdminUI();
+    scheduleTokenRefresh();
   } catch(e) {
     errEl.textContent = e.message;
     errEl.style.display = 'block';
@@ -404,6 +406,27 @@ async function doLogin(){
   btn.textContent = 'Sign In'; btn.disabled = false;
 }
 
+function scheduleTokenRefresh(){
+  // refresh every 50 minutes (token lasts 60)
+  setInterval(async ()=>{
+    const refresh = sessionStorage.getItem('sb_refresh');
+    if(!refresh) return;
+    try{
+      const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`,{
+        method:'POST',
+        headers:{'apikey':SUPABASE_ANON_KEY,'Content-Type':'application/json'},
+        body:JSON.stringify({refresh_token:refresh})
+      });
+      const data = await res.json();
+      if(data.access_token){
+        SESSION_TOKEN = data.access_token;
+        sessionStorage.setItem('sb_token', SESSION_TOKEN);
+        sessionStorage.setItem('sb_refresh', data.refresh_token);
+      }
+    }catch(e){ console.warn('Token refresh failed',e); }
+  }, 50*60*1000);
+}
+  
 function doLogout(){
   SESSION_TOKEN = null;
   sessionStorage.removeItem('sb_token');
@@ -426,7 +449,7 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('login-password').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
   document.getElementById('login-email').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
   const saved = sessionStorage.getItem('sb_token');
-  if(saved){ SESSION_TOKEN = saved; showAdminUI(); }
+  if(saved){ SESSION_TOKEN = saved; showAdminUI(); scheduleTokenRefresh(); }
 });
 
 // ── DB LAYER ──
