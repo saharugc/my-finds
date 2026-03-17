@@ -728,7 +728,7 @@ async function uploadImage(inputEl, previewId){
     });
     const data = await res.json();
     if(!res.ok) throw new Error(data.error?.message||'Upload failed');
-    const urlEl = inputEl.closest('.upload-row').querySelector('input[type=url]');
+    const urlEl = inputEl.closest('.form-group').querySelector('input[type=url]');
     urlEl.value = data.secure_url;
     previewImg(previewId, data.secure_url);
     toast('✦ Image uploaded!');
