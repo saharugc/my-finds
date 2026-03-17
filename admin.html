@@ -557,6 +557,10 @@ function toast(msg, dur=2800){
   setTimeout(()=>t.classList.remove('show'), dur);
 }
 
+function escapeAttr(str){
+  return str.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
 // ── IMAGE PREVIEW ──
 function previewImg(id, url){
   const img=document.getElementById(id); const ph=document.getElementById(id+'-placeholder');
@@ -881,7 +885,7 @@ async function renderAllPins(){
         <div class="ei-actions">
           <button class="btn btn-outline btn-sm" onclick="copyText('${SITE_URL}#pin-${p.id}')">Copy Link</button>
           <a href="index.html#pin-${p.id}" target="_blank"><button class="btn btn-outline btn-sm">Preview</button></a>
-          <button class="btn btn-outline btn-sm" onclick='editPin(${JSON.stringify(JSON.stringify(p))})'>Edit</button>
+          <button class="btn btn-outline btn-sm" onclick="editPin(this.dataset.p)" data-p="${escapeAttr(JSON.stringify(p))}">Edit</button>
           <button class="btn btn-danger btn-sm" onclick="delPin('${p.id}')">Delete</button>
         </div>
       </div>`).join('');
@@ -904,7 +908,7 @@ async function renderAllGroups(){
         <div class="ei-actions">
           <button class="btn btn-outline btn-sm" onclick="copyText('${SITE_URL}#group-${g.id}')">Copy Link</button>
           <a href="index.html#group-${g.id}" target="_blank"><button class="btn btn-outline btn-sm">Preview</button></a>
-          <button class="btn btn-outline btn-sm" onclick='editGroup(${JSON.stringify(JSON.stringify(g))})'>Edit</button>
+          <button class="btn btn-outline btn-sm" onclick="editGroup(this.dataset.g)" data-g="${escapeAttr(JSON.stringify(g))}">Edit</button>
           <button class="btn btn-danger btn-sm" onclick="delGroup('${g.id}')">Delete</button>
         </div>
       </div>`).join('');
